@@ -2,7 +2,7 @@
   "extends": ["tslint-react"],
   "defaultSeverity": "warning",
   "rules": {
-    "align": [true, "parameters", "arguments", "statements"],
+    "jsx-wrap-multiline": false,
     "ban": false,
     "class-name": true,
     "comment-format": [true, "check-space"],
@@ -15,7 +15,6 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "label-position": true,
-    "max-line-length": [true, 120],
     "member-ordering": [
       true,
       "public-before-private",
