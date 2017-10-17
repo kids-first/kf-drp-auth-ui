@@ -5,6 +5,8 @@ import 'react-table/react-table.css';
 import colors from 'common/colors';
 import { getUsers, TUser } from 'services';
 
+import Pagination from 'components/Pagination';
+
 const styles = {
   container: {
     minWidth: 300,
@@ -12,6 +14,7 @@ const styles = {
     borderRight: `1px solid ${colors.grey}`,
     padding: '0 30px 20px',
     overflowY: 'auto',
+    flex: 'none',
   },
 };
 
@@ -56,20 +59,29 @@ export default class UserList extends React.Component<
 
   render() {
     const { onSelect } = this.props;
-    const { users } = this.state;
+    const { users, count, limit, offset } = this.state;
 
     return (
-      <div className={`UserList ${css(styles.container)}`}>
-        {users.map(user => {
-          return (
-            <User
-              item={user}
-              style={{ cursor: 'pointer' }}
-              key={user.id}
-              onClick={() => onSelect(user)}
-            />
-          );
-        })}
+      <div className={`UserList column ${css(styles.container)}`}>
+        <div style={{ flexGrow: 1 }}>
+          {users.map(user => {
+            return (
+              <User
+                item={user}
+                style={{ cursor: 'pointer' }}
+                key={user.id}
+                onClick={() => onSelect(user)}
+              />
+            );
+          })}
+        </div>
+        <Pagination
+          onChange={page => this.setState({ offset: page * limit })}
+          offset={offset}
+          limit={limit}
+          total={count}
+          range={1}
+        />
       </div>
     );
   }
