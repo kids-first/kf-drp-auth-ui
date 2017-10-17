@@ -23,12 +23,12 @@ export default ({ onChange, offset, limit, total, range = 5 }) => {
         ];
 
   return (
-    <Menu pagination>
-      <Menu.Item
+    <Menu pagination size="mini">
+      {/* <Menu.Item
         name="prev"
         disabled={currentPage === 0}
         onClick={() => onChange(currentPage - 1)}
-      />
+      /> */}
 
       {Array(totalPages)
         .fill(null)
@@ -65,11 +65,11 @@ export default ({ onChange, offset, limit, total, range = 5 }) => {
           }
         }, [])}
 
-      <Menu.Item
+      {/* <Menu.Item
         name="next"
         disabled={currentPage === totalPages - 1}
         onClick={() => onChange(currentPage + 1)}
-      />
+      /> */}
     </Menu>
   );
 };
