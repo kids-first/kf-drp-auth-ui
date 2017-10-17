@@ -80,7 +80,7 @@ export default class UserList extends React.Component<
           offset={offset}
           limit={limit}
           total={count}
-          range={1}
+          range={3}
         />
       </div>
     );
