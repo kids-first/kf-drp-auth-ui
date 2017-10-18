@@ -13,8 +13,7 @@ interface IListProps {
   Component: any;
   getKey: Function;
   getData: Function;
-  limit: number;
-  showPagination: boolean;
+  limit?: number;
 }
 
 interface IListState {
@@ -36,20 +35,11 @@ const styles = {
   },
 };
 
-const enhance = compose(
-  withPropsOnChange(['limit', 'Component', 'count'], props => {
-    const limit =
-      props.limit ||
-      Math.floor(
-        (window.innerHeight - PAGINATION_HEIGHT - BOTTOM_PADDING) /
-          (props.Component.height || 50),
-      );
-
-    return { limit };
-  }),
-);
-
 class List extends React.Component<IListProps, IListState> {
+  static defaultProps = {
+    limit: 10,
+  };
+
   state = {
     items: [],
     count: 0,
@@ -77,8 +67,9 @@ class List extends React.Component<IListProps, IListState> {
   }
 
   render() {
-    const { onSelect, Component, getKey, limit } = this.props;
+    const { onSelect, Component, getKey } = this.props;
     const { items, count, offset } = this.state;
+    const limit = this.props.limit as number;
 
     return (
       <div className={`List ${css(styles.container)}`}>
@@ -108,4 +99,4 @@ class List extends React.Component<IListProps, IListState> {
   }
 }
 
-export default enhance(List);
+export default List;

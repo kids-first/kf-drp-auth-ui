@@ -12,40 +12,54 @@ const styles = {
     width: '100%',
     flexWrap: 'initial',
   },
-  list: {
-    minWidth: 300,
-    background: colors.lightGrey,
-    borderRight: `1px solid ${colors.grey}`,
-    padding: '0 30px 20px',
-    overflowY: 'auto',
-    flex: 'none',
-  },
   content: {},
+  userContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '15px 0',
+  },
+  userName: {
+    width: '16em',
+    fontSize: 20,
+    paddingBottom: 5,
+    display: 'flex',
+    alignItems: 'baseline',
+    wordBreak: 'break-all',
+  },
 };
 
-class User extends React.Component<any, any> {
-  public static height = 80;
-
-  render() {
-    const { item: { userName, email }, style, ...props } = this.props;
-
-    return (
-      <div
-        style={{
-          height: User.height,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          ...style,
-        }}
-        {...props}
-      >
-        <div style={{ fontSize: 20, paddingBottom: 5 }}>{userName}</div>
-        <div>{email}</div>
+const User = ({
+  item: { firstName, lastName, email, status, role },
+  style,
+  className,
+  ...props,
+}) => {
+  return (
+    <div
+      className={`${className ? className : ''} ${css({
+        ...styles.userContainer,
+        opacity: status === 'Deactivated' ? 0.5 : 1,
+        ...style,
+      })}`}
+      {...props}
+    >
+      <div className={`${css(styles.userName)}`}>
+        <div>
+          {firstName} {lastName}
+        </div>
+        {role === 'ADMIN' && (
+          <div
+            style={{ marginLeft: 5, fontSize: '0.5em', color: colors.purple }}
+          >
+            ADMIN
+          </div>
+        )}
       </div>
-    );
-  }
-}
+      {email}
+    </div>
+  );
+};
 
 const Content = ({ data }) => {
   return <div className={`${css(styles.content)}`}>{JSON.stringify(data)}</div>;

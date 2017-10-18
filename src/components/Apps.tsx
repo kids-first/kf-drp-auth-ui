@@ -15,27 +15,22 @@ const styles = {
   content: {},
 };
 
-class App extends React.Component<any, any> {
-  public static height = 50;
+const App = () => {
+  const { item: { name }, style, ...props } = this.props;
 
-  render() {
-    const { item: { name }, style, ...props } = this.props;
-
-    return (
-      <div
-        style={{
-          height: App.height,
-          display: 'flex',
-          alignItems: 'center',
-          ...style,
-        }}
-        {...props}
-      >
-        <div style={{ fontSize: 20 }}>{name}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        ...style,
+      }}
+      {...props}
+    >
+      <div style={{ fontSize: 20 }}>{name}</div>
+    </div>
+  );
+};
 
 const Content = ({ data }) => {
   return <div className={`${css(styles.content)}`}>{JSON.stringify(data)}</div>;
