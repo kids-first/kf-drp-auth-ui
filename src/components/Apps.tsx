@@ -12,24 +12,30 @@ const styles = {
     width: '100%',
     flexWrap: 'initial',
   },
-  list: {
-    minWidth: 300,
-    background: colors.lightGrey,
-    borderRight: `1px solid ${colors.grey}`,
-    padding: '0 30px 20px',
-    overflowY: 'auto',
-    flex: 'none',
-  },
   content: {},
 };
 
-const App = ({ item: { name }, style, ...props }) => {
-  return (
-    <div style={{ padding: '20px 0', ...style }} {...props}>
-      <div style={{ fontSize: 20 }}>{name}</div>
-    </div>
-  );
-};
+class App extends React.Component<any, any> {
+  public static height = 50;
+
+  render() {
+    const { item: { name }, style, ...props } = this.props;
+
+    return (
+      <div
+        style={{
+          height: App.height,
+          display: 'flex',
+          alignItems: 'center',
+          ...style,
+        }}
+        {...props}
+      >
+        <div style={{ fontSize: 20 }}>{name}</div>
+      </div>
+    );
+  }
+}
 
 const Content = ({ data }) => {
   return <div className={`${css(styles.content)}`}>{JSON.stringify(data)}</div>;

@@ -23,14 +23,29 @@ const styles = {
   content: {},
 };
 
-const User = ({ item: { userName, email }, style, ...props }) => {
-  return (
-    <div style={{ padding: '20px 0', ...style }} {...props}>
-      <div style={{ fontSize: 20, paddingBottom: 5 }}>{userName}</div>
-      <div>{email}</div>
-    </div>
-  );
-};
+class User extends React.Component<any, any> {
+  public static height = 80;
+
+  render() {
+    const { item: { userName, email }, style, ...props } = this.props;
+
+    return (
+      <div
+        style={{
+          height: User.height,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          ...style,
+        }}
+        {...props}
+      >
+        <div style={{ fontSize: 20, paddingBottom: 5 }}>{userName}</div>
+        <div>{email}</div>
+      </div>
+    );
+  }
+}
 
 const Content = ({ data }) => {
   return <div className={`${css(styles.content)}`}>{JSON.stringify(data)}</div>;

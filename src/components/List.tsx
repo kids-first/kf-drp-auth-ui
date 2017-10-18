@@ -3,14 +3,18 @@ import { css } from 'glamor';
 
 import colors from 'common/colors';
 import Pagination from 'components/Pagination';
-import { defaultProps } from 'recompose';
+import { withPropsOnChange, compose } from 'recompose';
+
+const PAGINATION_HEIGHT = 32;
+const BOTTOM_PADDING = 20;
 
 interface IListProps {
   onSelect: Function;
   Component: any;
   getKey: Function;
   getData: Function;
-  limit?: number;
+  limit: number;
+  showPagination: boolean;
 }
 
 interface IListState {
@@ -24,17 +28,26 @@ const styles = {
     minWidth: 300,
     background: colors.lightGrey,
     borderRight: `1px solid ${colors.grey}`,
-    padding: '0 30px 20px',
+    padding: `0 30px ${BOTTOM_PADDING}px`,
     overflowY: 'auto',
     flex: 'none',
   },
 };
 
-export default class List extends React.Component<IListProps, IListState> {
-  public static defaultProps = {
-    limit: 10,
-  };
+const enhance = compose(
+  withPropsOnChange(['limit', 'Component', 'count'], props => {
+    const limit =
+      props.limit ||
+      Math.floor(
+        (window.innerHeight - PAGINATION_HEIGHT - BOTTOM_PADDING) /
+          (props.Component.height || 50),
+      );
 
+    return { limit };
+  }),
+);
+
+class List extends React.Component<IListProps, IListState> {
   state = {
     items: [],
     count: 0,
@@ -62,9 +75,8 @@ export default class List extends React.Component<IListProps, IListState> {
   }
 
   render() {
-    const { onSelect, Component, getKey } = this.props;
+    const { onSelect, Component, getKey, limit } = this.props;
     const { items, count, offset } = this.state;
-    const limit = this.props.limit as number;
 
     return (
       <div className={`List column ${css(styles.container)}`}>
@@ -93,3 +105,5 @@ export default class List extends React.Component<IListProps, IListState> {
     );
   }
 }
+
+export default enhance(List);
