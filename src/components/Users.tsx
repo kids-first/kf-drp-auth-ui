@@ -27,6 +27,11 @@ const styles = {
     alignItems: 'baseline',
     wordBreak: 'break-all',
   },
+  userAdmin: {
+    marginLeft: 5,
+    fontSize: '0.5em',
+    color: colors.purple,
+  },
 };
 
 const User = ({
@@ -37,11 +42,14 @@ const User = ({
 }) => {
   return (
     <div
-      className={`${className ? className : ''} ${css({
-        ...styles.userContainer,
-        opacity: status === 'Deactivated' ? 0.5 : 1,
-        ...style,
-      })}`}
+      className={`${className ? className : ''} ${css(
+        styles.userContainer,
+        status === 'Deactivated' && {
+          opacity: 0.3,
+          fontStyle: 'italic',
+        },
+        style,
+      )}`}
       {...props}
     >
       <div className={`${css(styles.userName)}`}>
@@ -49,11 +57,7 @@ const User = ({
           {firstName} {lastName}
         </div>
         {role === 'ADMIN' && (
-          <div
-            style={{ marginLeft: 5, fontSize: '0.5em', color: colors.purple }}
-          >
-            ADMIN
-          </div>
+          <div className={`${css(styles.userAdmin)}`}>ADMIN</div>
         )}
       </div>
       {email}
