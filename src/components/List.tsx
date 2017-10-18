@@ -31,6 +31,8 @@ const styles = {
     padding: `0 30px ${BOTTOM_PADDING}px`,
     overflowY: 'auto',
     flex: 'none',
+    display: 'flex',
+    flexDirection: 'column',
   },
 };
 
@@ -79,7 +81,7 @@ class List extends React.Component<IListProps, IListState> {
     const { items, count, offset } = this.state;
 
     return (
-      <div className={`List column ${css(styles.container)}`}>
+      <div className={`List ${css(styles.container)}`}>
         <div style={{ flexGrow: 1 }}>
           {items.map(item => {
             return (
