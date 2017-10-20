@@ -11,23 +11,12 @@ const styles = {
 };
 
 const DATE_KEYS = ['createdAt', 'lastLogin'];
-export default ({ data }) => {
+export default ({ data, keys }) => {
   return (
     <div className={`${css(styles.container)}`}>
       <Table basic="very" style={{ fontSize: 18 }}>
         <Table.Body>
-          {[
-            'firstName',
-            'lastName',
-            'userName',
-            'email',
-            'role',
-            'status',
-            'createdAt',
-            'lastLogin',
-            'preferredLanguage',
-            'id',
-          ].map(key => {
+          {keys.map(key => {
             return (
               <Table.Row key={key} style={{ verticalAlign: 'baseline' }}>
                 <Table.Cell

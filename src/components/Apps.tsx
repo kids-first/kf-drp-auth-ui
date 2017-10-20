@@ -1,9 +1,9 @@
 import React from 'react';
 import { css } from 'glamor';
-import colors from 'common/colors';
-import { getApps } from 'services';
+import { getApps, getApp } from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
+import Content from 'components/Content';
 
 const styles = {
   container: {
@@ -12,12 +12,9 @@ const styles = {
     width: '100%',
     flexWrap: 'initial',
   },
-  content: {},
 };
 
-const App = () => {
-  const { item: { name }, style, ...props } = this.props;
-
+const App = ({ item: { name }, style, ...props }) => {
   return (
     <div
       style={{
@@ -32,14 +29,28 @@ const App = () => {
   );
 };
 
-const Content = ({ data }) => {
-  return <div className={`${css(styles.content)}`}>{JSON.stringify(data)}</div>;
-};
+export default class extends React.Component<any, any> {
+  state = { currentApp: null };
 
-export default class extends React.Component {
-  state = {
-    currentApp: null,
+  fetchApp = async id => {
+    const currentApp = await getApp(id);
+    this.setState({ currentApp });
   };
+
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    if (id) {
+      this.fetchApp(id);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    const id = nextProps.match.params.id;
+
+    if (id && id !== this.props.match.params.id) {
+      this.fetchApp(id);
+    }
+  }
 
   render() {
     return (
@@ -49,9 +60,24 @@ export default class extends React.Component {
           Component={App}
           getKey={item => item.id}
           getData={getApps}
-          onSelect={currentApp => this.setState({ currentApp })}
+          onSelect={currentApp => {
+            this.props.history.push(`/apps/${currentApp.id}`);
+          }}
         />
-        {this.state.currentApp && <Content data={this.state.currentApp} />}
+        {this.state.currentApp && (
+          <Content
+            data={this.state.currentApp}
+            keys={[
+              'name',
+              'clientId',
+              'clientSecret',
+              'description',
+              'id',
+              'redirectUri',
+              'status',
+            ]}
+          />
+        )}
       </div>
     );
   }

@@ -3,9 +3,9 @@ import { css } from 'glamor';
 import { getUsers, getUser } from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
+import Content from 'components/Content';
 
 import Item from './Item';
-import Content from './Content';
 
 const styles = {
   container: {
@@ -51,7 +51,23 @@ export default class extends React.Component<any, any> {
             this.props.history.push(`/users/${currentUser.id}`);
           }}
         />
-        {this.state.currentUser && <Content data={this.state.currentUser} />}
+        {this.state.currentUser && (
+          <Content
+            data={this.state.currentUser}
+            keys={[
+              'firstName',
+              'lastName',
+              'userName',
+              'email',
+              'role',
+              'status',
+              'createdAt',
+              'lastLogin',
+              'preferredLanguage',
+              'id',
+            ]}
+          />
+        )}
       </div>
     );
   }
