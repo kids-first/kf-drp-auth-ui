@@ -1,13 +1,15 @@
+import _ from 'lodash';
 import ajax from 'services/ajax';
 import { useDummyData } from 'common/injectGlobals';
 import queryString from 'querystring';
 import { User } from 'common/typedefs/User';
 import dummyUsers from './dummyData/users';
 
-export const getUsers = (
+export const getUsers = ({
   offset = 0,
   limit = 20,
-): Promise<{ count: number; resultSet: User[] }> => {
+  query = '',
+}): Promise<{ count: number; resultSet: User[] }> => {
   return useDummyData
     ? Promise.resolve({
         count: dummyUsers.length,
@@ -15,10 +17,9 @@ export const getUsers = (
       })
     : ajax
         .get(
-          `/users?${queryString.stringify({
-            limit,
-            offset,
-          })}`,
+          `/users?${queryString.stringify(
+            _.omitBy({ limit, offset, query }, _.isNil),
+          )}`,
         )
         .then(r => r.data);
 };

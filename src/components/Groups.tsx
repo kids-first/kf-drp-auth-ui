@@ -1,9 +1,11 @@
 import React from 'react';
 import { css } from 'glamor';
-import { getGroups, getGroup } from 'services';
+import { getGroups, getGroup, getUsers } from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
 import Content from 'components/Content';
+import { addGroupToUser, removeGroupFromUser } from '../services/updateUser';
+import Associator from 'components/ItemList/Associator';
 
 const styles = {
   container: {
@@ -32,11 +34,20 @@ const Group = ({ item: { name }, style, ...props }) => {
 export default class extends React.Component<any, any> {
   state = {
     currentGroup: null,
+    currentUsers: null,
   };
 
   fetchGroup = async id => {
     const currentGroup = await getGroup(id);
-    this.setState({ currentGroup });
+
+    // TODO: objects should be returned in initial response, no need for this call
+    const currentUsers = (await getUsers({
+      limit: 100,
+    })).resultSet.filter(user => {
+      return user.groups.find(name => name === currentGroup.name);
+    });
+
+    this.setState({ currentGroup, currentUsers });
   };
 
   componentDidMount() {
@@ -55,6 +66,9 @@ export default class extends React.Component<any, any> {
   }
 
   render() {
+    const currentGroup = this.state.currentGroup as any;
+    const currentUsers = this.state.currentUsers as any;
+
     return (
       <div className={`row ${css(styles.container)}`}>
         <Nav />
@@ -62,13 +76,34 @@ export default class extends React.Component<any, any> {
           Component={Group}
           getKey={item => item.id}
           getData={getGroups}
-          onSelect={currentGroup =>
-            this.props.history.push(`/groups/${currentGroup.id}`)}
+          onSelect={groups => this.props.history.push(`/groups/${groups.id}`)}
         />
-        {this.state.currentGroup && (
+        {currentGroup && (
           <Content
-            data={this.state.currentGroup}
-            keys={['name', 'description', 'id', 'status', 'applications']}
+            data={{
+              ...currentGroup,
+              users: (
+                <Associator
+                  key={`${currentGroup.id}-groups`}
+                  initialItems={currentUsers}
+                  fetchItems={getUsers}
+                  onAdd={user => {
+                    addGroupToUser({ user, group: currentGroup });
+                  }}
+                  onRemove={user => {
+                    removeGroupFromUser({ user, group: currentGroup });
+                  }}
+                />
+              ),
+            }}
+            keys={[
+              'name',
+              'description',
+              'id',
+              'status',
+              'applications',
+              'users',
+            ]}
           />
         )}
       </div>
