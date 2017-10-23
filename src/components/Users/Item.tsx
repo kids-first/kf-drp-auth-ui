@@ -10,12 +10,10 @@ const styles = {
     justifyContent: 'center',
     padding: '10px 0',
   },
-  userName: {
-    width: '16em',
-    fontSize: 18,
-    display: 'flex',
-    alignItems: 'baseline',
-    wordBreak: 'break-all',
+  email: {
+    color: '#aaa',
+    fontWeight: 200,
+    fontSize: '0.9em',
   },
   userAdmin: {
     marginLeft: 5,
@@ -32,7 +30,7 @@ export default ({
 }) => {
   return (
     <div
-      className={`${className ? className : ''} ${css(
+      className={`Item ${className ? className : ''} ${css(
         styles.container,
         status === 'Deactivated' && {
           opacity: 0.3,
@@ -43,7 +41,7 @@ export default ({
       {...props}
     >
       <DisplayName firstName={firstName} lastName={lastName} role={role} />
-      {email}
+      <span className={`email ${css(styles.email)}`}>{email}</span>
     </div>
   );
 };

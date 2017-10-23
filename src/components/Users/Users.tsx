@@ -25,7 +25,9 @@ const styles = {
     backgroundColor: '#fff',
     height: '100%',
     width: '100%',
-    flexWrap: 'initial',
+    '&:not(.bump-specificity)': {
+      flexWrap: 'initial',
+    },
   },
 };
 
