@@ -7,13 +7,14 @@ import { format } from 'date-fns';
 const styles = {
   container: {
     padding: 60,
+    minWidth: 500,
   },
 };
 
 const DATE_KEYS = ['createdAt', 'lastLogin'];
-export default ({ data, keys }) => {
+export default ({ data, keys, styles: stylesProp = {} }) => {
   return (
-    <div className={`${css(styles.container)}`}>
+    <div className={`Content ${css(styles.container, stylesProp)}`}>
       <Table basic="very" style={{ fontSize: 18 }}>
         <Table.Body>
           {keys.map(key => {
@@ -24,6 +25,7 @@ export default ({ data, keys }) => {
                     fontSize: '0.65em',
                     border: 'none',
                     textAlign: 'right',
+                    width: '6em',
                   }}
                 >
                   {_.upperCase(key)}

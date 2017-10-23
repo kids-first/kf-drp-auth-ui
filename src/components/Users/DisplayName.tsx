@@ -4,7 +4,7 @@ import colors from 'common/colors';
 
 const styles = {
   container: {
-    width: '16em',
+    width: '160px',
     fontSize: 18,
     display: 'flex',
     alignItems: 'baseline',
@@ -17,7 +17,7 @@ const styles = {
   },
   formattedName: {
     '& .name-part': {
-      maxWidth: '10em',
+      maxWidth: '7em',
       overflowX: 'hidden',
       textOverflow: 'ellipsis',
       display: 'inline-block',
