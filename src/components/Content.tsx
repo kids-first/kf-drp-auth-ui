@@ -8,6 +8,8 @@ const styles = {
   container: {
     padding: 60,
     minWidth: 500,
+    boxShadow: '-2px 0 12px 0 rgba(0,0,0,0.1)',
+    position: 'relative',
   },
 };
 

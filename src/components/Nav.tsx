@@ -13,6 +13,7 @@ const resetList = {
 
 const styles = {
   container: {
+    position: 'relative',
     backgroundColor: colors.purple,
     color: '#fff',
     width: 240,
@@ -20,6 +21,8 @@ const styles = {
     flex: 'none',
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 1,
+    boxShadow: 'rgba(80, 35, 74, 0.5) 1px 0px 12px 0px',
   },
 
   logo: {
@@ -45,7 +48,7 @@ const styles = {
 };
 
 const Nav = () => (
-  <div className={`${css(styles.container)}`}>
+  <div className={`Nav ${css(styles.container)}`}>
     <img
       className={`Emblem ${css(styles.logo)}`}
       src={require('assets/emblem-white.svg')}
