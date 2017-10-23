@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'glamor';
 import colors from 'common/colors';
-import FullName from './FullName';
+import DisplayName from './DisplayName';
 
 const styles = {
   container: {
@@ -42,7 +42,7 @@ export default ({
       )}`}
       {...props}
     >
-      <FullName firstName={firstName} lastName={lastName} role={role} />
+      <DisplayName firstName={firstName} lastName={lastName} role={role} />
       {email}
     </div>
   );
