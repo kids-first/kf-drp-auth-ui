@@ -22,6 +22,7 @@ const Group = ({ item: { name }, style, ...props }) => {
       style={{
         display: 'flex',
         alignItems: 'center',
+        padding: '10px 0',
         ...style,
       }}
       {...props}
