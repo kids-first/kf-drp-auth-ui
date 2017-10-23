@@ -82,6 +82,7 @@ export default class extends React.Component<any, any> {
           Component={Item}
           getKey={item => item.id}
           getData={getUsers}
+          selectedItem={currentUser}
           onSelect={user => {
             this.props.history.push(`/users/${user.id}`);
           }}

@@ -9,6 +9,22 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     padding: '10px 0',
+    '& .DisplayName, & .email': {
+      position: 'relative',
+      '&::before': {
+        backgroundColor: colors.purple,
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: -10,
+        height: '100%',
+        width: 3,
+
+        transition: 'opacity 0.15s, transform 0.15s',
+        transform: 'translateX(-2px)',
+        opacity: 0,
+      },
+    },
   },
   email: {
     color: '#aaa',
@@ -20,12 +36,21 @@ const styles = {
     fontSize: '0.5em',
     color: colors.purple,
   },
+  selected: {
+    '& .DisplayName, & .email': {
+      '&::before': {
+        transform: 'translateX(0)',
+        opacity: 1,
+      },
+    },
+  },
 };
 
 export default ({
   item: { firstName, lastName, email, status, role },
   style,
   className,
+  selected,
   ...props,
 }) => {
   return (
@@ -36,6 +61,7 @@ export default ({
           opacity: 0.3,
           fontStyle: 'italic',
         },
+        selected && styles.selected,
         style,
       )}`}
       {...props}

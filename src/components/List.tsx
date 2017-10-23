@@ -15,6 +15,7 @@ interface IListProps {
   size: any;
   pageSize: number;
   styles: any;
+  selectedItem: any;
 }
 
 interface IListState {
@@ -115,7 +116,14 @@ class Component extends React.Component<IListProps, IListState> {
   }
 
   render() {
-    const { onSelect, Component, getKey, pageSize, styles } = this.props;
+    const {
+      onSelect,
+      Component,
+      getKey,
+      pageSize,
+      styles,
+      selectedItem,
+    } = this.props;
     const { items, count, offset } = this.state;
 
     const fillersRequired = pageSize - items.length;
@@ -129,6 +137,7 @@ class Component extends React.Component<IListProps, IListState> {
               style={styles.listItem}
               key={getKey(item)}
               onClick={() => onSelect(item)}
+              selected={selectedItem && getKey(item) === getKey(selectedItem)}
             />
           ))}
           {_.range(fillersRequired).map(i => (
