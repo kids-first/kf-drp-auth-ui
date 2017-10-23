@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import { css } from 'glamor';
 import withSize from 'react-sizeme';
@@ -22,7 +23,7 @@ interface IListState {
   offset: number;
 }
 
-const styles = ({ columnWidth }) => ({
+const styles = ({ columnWidth, rowHeight }) => ({
   container: {
     minWidth: columnWidth,
     background: colors.lightGrey,
@@ -45,7 +46,14 @@ const styles = ({ columnWidth }) => ({
     flexGrow: 1,
     cursor: 'pointer',
     padding: '0 1em',
+    minWidth: columnWidth,
+    height: rowHeight,
     '&:hover': { backgroundColor: '#f0f0f0' },
+  },
+
+  filler: {
+    minWidth: columnWidth,
+    height: rowHeight,
   },
 });
 
@@ -58,8 +66,8 @@ const enhance = compose(
     refreshRate: 20,
     monitorHeight: true,
   }),
-  withProps(({ columnWidth }) => ({
-    styles: styles({ columnWidth }),
+  withProps(({ columnWidth, rowHeight }) => ({
+    styles: styles({ columnWidth, rowHeight }),
   })),
   withPropsOnChange(
     (props, nextProps) =>
@@ -107,14 +115,13 @@ class Component extends React.Component<IListProps, IListState> {
   }
 
   render() {
-    const { onSelect, Component, getKey, size, pageSize, styles } = this.props;
+    const { onSelect, Component, getKey, pageSize, styles } = this.props;
     const { items, count, offset } = this.state;
+
+    const fillersRequired = pageSize - items.length;
 
     return (
       <div className={`List ${css(styles.container)}`}>
-        <pre style={{ position: 'fixed', top: 0, right: 0 }}>
-          {JSON.stringify(Object.assign({ pageSize }, size), null, '  ')}
-        </pre>
         <div className={`items-wrapper`}>
           {items.map(item => (
             <Component
@@ -123,6 +130,9 @@ class Component extends React.Component<IListProps, IListState> {
               key={getKey(item)}
               onClick={() => onSelect(item)}
             />
+          ))}
+          {_.range(fillersRequired).map(i => (
+            <div key={i + offset} className={`filler ${css(styles.filler)}`} />
           ))}
         </div>
         {(pageSize < count || offset > 0) && (
