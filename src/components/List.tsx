@@ -125,7 +125,7 @@ class Component extends React.Component<IListProps, IListState> {
             />
           ))}
         </div>
-        {pageSize < count && (
+        {(pageSize < count || offset > 0) && (
           <Pagination
             onChange={page => this.setState({ offset: page * pageSize })}
             offset={offset}
