@@ -64,7 +64,7 @@ const render = ({
         disabledItems={itemsInList}
       />
       {itemsInList.map(item => (
-        <Label key={getKey(item)}>
+        <Label key={getKey(item)} style={{ marginBottom: '0.27em' }}>
           {getName(item)}
           <Icon name="delete" onClick={() => removeItem(item)} />
         </Label>
