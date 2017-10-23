@@ -47,7 +47,7 @@ const enhance = compose(
     },
     requestItems: async query => {
       const response = await fetchItems({ query });
-      setItems(response.results);
+      setItems(response.resultSet);
     },
   })),
   withHandlers({

@@ -1,9 +1,17 @@
 import React from 'react';
 import { css } from 'glamor';
-import { getUsers, getUser } from 'services';
+import {
+  getUsers,
+  getUser,
+  getGroups,
+  addGroupToUser,
+  removeGroupFromUser,
+} from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
 import Content from 'components/Content';
+
+import Associator from 'components/ItemList/Associator';
 
 import Item from './Item';
 
@@ -17,11 +25,23 @@ const styles = {
 };
 
 export default class extends React.Component<any, any> {
-  state = { currentUser: null };
+  state = {
+    currentUser: null,
+    currentGroups: null,
+  };
 
   fetchUser = async id => {
     const currentUser = await getUser(id);
-    this.setState({ currentUser });
+
+    // TODO: objects should be returned in initial response, no need for this call
+    const currentGroups = (await getGroups({
+      limit: 100,
+    })).resultSet.filter(r => currentUser.groups.find(name => name === r.name));
+
+    this.setState({
+      currentUser,
+      currentGroups,
+    });
   };
 
   componentDidMount() {
@@ -40,6 +60,9 @@ export default class extends React.Component<any, any> {
   }
 
   render() {
+    const currentUser = this.state.currentUser as any;
+    const currentGroups = this.state.currentGroups as any;
+
     return (
       <div className={`row ${css(styles.container)}`}>
         <Nav />
@@ -47,13 +70,28 @@ export default class extends React.Component<any, any> {
           Component={Item}
           getKey={item => item.id}
           getData={getUsers}
-          onSelect={currentUser => {
-            this.props.history.push(`/users/${currentUser.id}`);
+          onSelect={user => {
+            this.props.history.push(`/users/${user.id}`);
           }}
         />
-        {this.state.currentUser && (
+        {currentUser && (
           <Content
-            data={this.state.currentUser}
+            data={{
+              ...currentUser,
+              groups: (
+                <Associator
+                  key={`${currentUser.id}-groups`}
+                  initialItems={currentGroups}
+                  fetchItems={getGroups}
+                  onAdd={group => {
+                    addGroupToUser({ user: currentUser, group });
+                  }}
+                  onRemove={group => {
+                    removeGroupFromUser({ user: currentUser, group });
+                  }}
+                />
+              ),
+            }}
             keys={[
               'firstName',
               'lastName',
@@ -65,6 +103,7 @@ export default class extends React.Component<any, any> {
               'lastLogin',
               'preferredLanguage',
               'id',
+              'groups',
             ]}
           />
         )}

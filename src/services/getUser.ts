@@ -1,8 +1,6 @@
 import ajax from 'services/ajax';
 import { useDummyData } from 'common/injectGlobals';
-import { User } from 'common/typedefs/User';
-
-const dummyUsers = require('./dummyUsers.json') as User[];
+import dummyUsers from './dummyData/users';
 
 export const getUser = id => {
   return useDummyData

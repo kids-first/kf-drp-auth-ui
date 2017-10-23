@@ -10,17 +10,16 @@ export const getGroups = ({
   offset = 0,
   limit = 20,
   query = '',
-}): Promise<{ count: number; results: Group[] }> => {
+}): Promise<{ count: number; resultSet: Group[] }> => {
   return useDummyData
     ? Promise.resolve({
         count: dummyGroups.length,
-        results: dummyGroups.slice(offset, offset + limit),
+        resultSet: dummyGroups.slice(offset, offset + limit),
       })
     : ajax
         .get(
           `/groups?${queryString.stringify(
-            _.omitBy({ limit, offset, query }),
-            _.isNil,
+            _.omitBy({ limit, offset, query }, _.isNil),
           )}`,
         )
         .then(r => r.data);
