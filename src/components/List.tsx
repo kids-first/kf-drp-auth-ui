@@ -40,6 +40,8 @@ const styles = ({ columnWidth, rowHeight }) => ({
       flexWrap: 'wrap',
       flexGrow: 1,
       justifyContent: 'space-evenly',
+      paddingLeft: 10,
+      paddingRight: 10,
     },
   },
 
@@ -60,7 +62,7 @@ const styles = ({ columnWidth, rowHeight }) => ({
 
 const enhance = compose(
   defaultProps({
-    columnWidth: 230,
+    columnWidth: 200,
     rowHeight: 60,
   }),
   withSize({
@@ -72,13 +74,13 @@ const enhance = compose(
   })),
   withPropsOnChange(
     (props, nextProps) =>
-      (props.size.width !== nextProps.size.width ||
-        props.size.height !== nextProps.size.height) &&
+      (props.size.width !== nextProps.size.width || props.size.height !== nextProps.size.height) &&
       nextProps.size.width !== 0,
     ({ size, columnWidth, rowHeight }) => {
       // TODO: move this HOC into the element that only renders the list, no extra elements to account for
       const extraVerticalSpace = 60;
-      const columns = Math.floor(size.width / columnWidth);
+      const extraHorizontalSpace = 20;
+      const columns = Math.floor((size.width - extraHorizontalSpace) / columnWidth);
       const rows = Math.floor((size.height - extraVerticalSpace) / rowHeight);
       const pageSize = columns * rows;
       return {
@@ -107,23 +109,13 @@ class Component extends React.Component<IListProps, IListState> {
   }
 
   componentDidUpdate(prevProps: IListProps, prevState: IListState) {
-    if (
-      prevProps.pageSize !== this.props.pageSize ||
-      prevState.offset !== this.state.offset
-    ) {
+    if (prevProps.pageSize !== this.props.pageSize || prevState.offset !== this.state.offset) {
       this.fetchData();
     }
   }
 
   render() {
-    const {
-      onSelect,
-      Component,
-      getKey,
-      pageSize,
-      styles,
-      selectedItem,
-    } = this.props;
+    const { onSelect, Component, getKey, pageSize, styles, selectedItem } = this.props;
     const { items, count, offset } = this.state;
 
     const fillersRequired = pageSize - items.length;

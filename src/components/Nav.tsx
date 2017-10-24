@@ -21,8 +21,6 @@ const styles = {
     flex: 'none',
     display: 'flex',
     flexDirection: 'column',
-    zIndex: 1,
-    boxShadow: 'rgba(80, 35, 74, 0.5) 1px 0px 12px 0px',
   },
 
   logo: {
