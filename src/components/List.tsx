@@ -49,13 +49,13 @@ const styles = ({ columnWidth, rowHeight }) => ({
     flexGrow: 1,
     cursor: 'pointer',
     padding: '0 1em',
-    minWidth: columnWidth,
+    width: columnWidth,
     height: rowHeight,
     '&:hover': { backgroundColor: '#f0f0f0' },
   },
 
   filler: {
-    minWidth: columnWidth,
+    width: columnWidth,
     height: rowHeight,
   },
 });
