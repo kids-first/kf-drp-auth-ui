@@ -4,7 +4,7 @@ import { useDummyData } from 'common/injectGlobals';
 import queryString from 'querystring';
 import { Group } from 'common/typedefs/Group';
 
-const dummyGroups = require('./dummyGroups.json') as Group[];
+import dummyGroups from './dummyData/groups';
 
 export const getGroups = ({
   offset = 0,
