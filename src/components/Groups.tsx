@@ -1,11 +1,21 @@
 import React from 'react';
 import { css } from 'glamor';
-import { getGroups, getGroup, getUsers } from 'services';
+import {
+  getGroups,
+  getGroup,
+  getUsers,
+  getApps,
+  addApplicationToGroup,
+  removeApplicationFromGroup,
+  getGroupApplications,
+  getGroupUsers,
+  addGroupToUser,
+} from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
 import Content from 'components/Content';
-import { addGroupToUser, removeGroupFromUser } from '../services/updateUser';
 import Associator from 'components/ItemList/Associator';
+import { removeGroupFromUser } from '../services/updateUser';
 
 const styles = {
   container: {
@@ -36,19 +46,25 @@ export default class extends React.Component<any, any> {
   state = {
     currentGroup: null,
     currentUsers: null,
+    currentApplications: null,
   };
 
   fetchGroup = async id => {
-    const currentGroup = await getGroup(id);
+    const [
+      currentGroup,
+      currentUsers,
+      currentApplications,
+    ] = await Promise.all([
+      getGroup(id),
+      getGroupUsers(id),
+      getGroupApplications(id),
+    ]);
 
-    // TODO: objects should be returned in initial response, no need for this call
-    const currentUsers = (await getUsers({
-      limit: 100,
-    })).resultSet.filter(user => {
-      return user.groups.find(name => name === currentGroup.name);
+    this.setState({
+      currentGroup,
+      currentUsers: currentUsers.resultSet,
+      currentApplications: currentApplications.resultSet,
     });
-
-    this.setState({ currentGroup, currentUsers });
   };
 
   componentDidMount() {
@@ -68,7 +84,7 @@ export default class extends React.Component<any, any> {
 
   render() {
     const currentGroup = this.state.currentGroup as any;
-    const currentUsers = this.state.currentUsers as any;
+    const { currentUsers, currentApplications } = this.state;
 
     return (
       <div className={`row ${css(styles.container)}`}>
@@ -85,7 +101,7 @@ export default class extends React.Component<any, any> {
               ...currentGroup,
               users: (
                 <Associator
-                  key={`${currentGroup.id}-groups`}
+                  key={`${currentGroup.id}-user`}
                   initialItems={currentUsers}
                   fetchItems={getUsers}
                   onAdd={user => {
@@ -96,14 +112,30 @@ export default class extends React.Component<any, any> {
                   }}
                 />
               ),
+              applications: (
+                <Associator
+                  key={`${currentGroup.id}-applications`}
+                  initialItems={currentApplications}
+                  fetchItems={getApps}
+                  onAdd={application => {
+                    addApplicationToGroup({ application, group: currentGroup });
+                  }}
+                  onRemove={application => {
+                    removeApplicationFromGroup({
+                      application,
+                      group: currentGroup,
+                    });
+                  }}
+                />
+              ),
             }}
             keys={[
               'name',
               'description',
               'id',
               'status',
-              'applications',
               'users',
+              'applications',
             ]}
           />
         )}

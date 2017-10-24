@@ -6,6 +6,10 @@ import {
   getGroups,
   addGroupToUser,
   removeGroupFromUser,
+  getUserGroups,
+  getUserApplications,
+  addApplicationToUser,
+  removeApplicationFromUser,
 } from 'services';
 import Nav from 'components/Nav';
 import List from 'components/List';
@@ -14,6 +18,7 @@ import Content from 'components/Content';
 import Associator from 'components/ItemList/Associator';
 
 import Item from './Item';
+import { getApps } from 'services';
 
 const styles = {
   container: {
@@ -28,19 +33,24 @@ export default class extends React.Component<any, any> {
   state = {
     currentUser: null,
     currentGroups: null,
+    currentApplications: null,
   };
 
   fetchUser = async id => {
-    const currentUser = await getUser(id);
-
-    // TODO: objects should be returned in initial response, no need for this call
-    const currentGroups = (await getGroups({
-      limit: 100,
-    })).resultSet.filter(r => currentUser.groups.find(name => name === r.name));
+    const [
+      currentUser,
+      currentGroups,
+      currentApplications,
+    ] = await Promise.all([
+      getUser(id),
+      getUserGroups(id),
+      getUserApplications(id),
+    ]);
 
     this.setState({
       currentUser,
-      currentGroups,
+      currentGroups: currentGroups.resultSet,
+      currentApplications: currentApplications.resultSet,
     });
   };
 
@@ -61,7 +71,7 @@ export default class extends React.Component<any, any> {
 
   render() {
     const currentUser = this.state.currentUser as any;
-    const currentGroups = this.state.currentGroups as any;
+    const { currentGroups, currentApplications } = this.state;
 
     return (
       <div className={`row ${css(styles.container)}`}>
@@ -91,6 +101,22 @@ export default class extends React.Component<any, any> {
                   }}
                 />
               ),
+              applications: (
+                <Associator
+                  key={`${currentUser.id}-applications`}
+                  initialItems={currentApplications}
+                  fetchItems={getApps}
+                  onAdd={application => {
+                    addApplicationToUser({ user: currentUser, application });
+                  }}
+                  onRemove={application => {
+                    removeApplicationFromUser({
+                      user: currentUser,
+                      application,
+                    });
+                  }}
+                />
+              ),
             }}
             keys={[
               'firstName',
@@ -104,6 +130,7 @@ export default class extends React.Component<any, any> {
               'preferredLanguage',
               'id',
               'groups',
+              'applications',
             ]}
           />
         )}

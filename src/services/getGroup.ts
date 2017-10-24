@@ -9,3 +9,15 @@ export const getGroup = id => {
     ? Promise.resolve(dummyGroups.find(group => id === group.id))
     : ajax.get(`/groups/${id}`).then(r => r.data);
 };
+
+export const getGroupUsers = id => {
+  return useDummyData
+    ? Promise.resolve(dummyGroups.find(group => id === group.id))
+    : ajax.get(`/groups/${id}/users`).then(r => r.data);
+};
+
+export const getGroupApplications = id => {
+  return useDummyData
+    ? Promise.resolve(dummyGroups.find(group => id === group.id))
+    : ajax.get(`/groups/${id}/applications`).then(r => r.data);
+};
