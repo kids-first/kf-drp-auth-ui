@@ -19,11 +19,15 @@ const styles = {
         left: -10,
         height: '100%',
         width: 3,
-
-        transition: 'opacity 0.15s, transform 0.15s',
-        transform: 'translateX(-2px)',
+        transition: 'opacity 0.15s, transform 0.3s',
         opacity: 0,
       },
+    },
+    '& .DisplayName::before': {
+      transform: 'translateY(12px)',
+    },
+    '& .email::before': {
+      transform: 'translateY(-12px)',
     },
   },
   email: {
@@ -39,7 +43,7 @@ const styles = {
   selected: {
     '& .DisplayName, & .email': {
       '&::before': {
-        transform: 'translateX(0)',
+        transform: 'translateY(0) !important',
         opacity: 1,
       },
     },
