@@ -49,6 +49,7 @@
     "tslint": "4.5.1"
   },
   "prettier": {
+    "printWidth": 100,
     "trailingComma": "all",
     "singleQuote": true
   }
