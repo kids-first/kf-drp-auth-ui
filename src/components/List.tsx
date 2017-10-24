@@ -100,7 +100,7 @@ class Component extends React.Component<IListProps, IListState> {
   fetchData = async () => {
     const { getData, pageSize } = this.props;
     const { offset } = this.state;
-    const { resultSet, count = 0 } = await getData(offset, pageSize);
+    const { resultSet, count = 0 } = await getData({ offset, limit: pageSize });
     this.setState({ items: resultSet, count });
   };
 

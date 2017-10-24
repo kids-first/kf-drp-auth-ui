@@ -38,7 +38,7 @@ const FormatName = ({ firstName = '', lastName = '' }) => (
   <span className={`formatted-name, ${css(styles.formattedName)}`}>
     <span className={`last-name name-part`}>{lastName}</span>
     <span className={`punctuation`}>,</span>{' '}
-    <span className={`first-name name-part`}>{firstName[0].toUpperCase()}</span>
+    <span className={`first-name name-part`}>{(firstName[0] || '').toUpperCase()}</span>
     <span className={`punctuation`}>.</span>
   </span>
 );
@@ -46,8 +46,6 @@ const FormatName = ({ firstName = '', lastName = '' }) => (
 export default ({ firstName, lastName, role, style }: any) => (
   <div className={`DisplayName ${css(styles.container, style)}`}>
     <FormatName firstName={firstName} lastName={lastName} />
-    {role === 'ADMIN' && (
-      <div className={`${css(styles.userAdmin)}`}>ADMIN</div>
-    )}
+    {role === 'ADMIN' && <div className={`${css(styles.userAdmin)}`}>ADMIN</div>}
   </div>
 );
