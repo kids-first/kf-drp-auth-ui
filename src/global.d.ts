@@ -3,5 +3,6 @@ declare namespace NodeJS {
     gapi: any;
     log: Function;
     FB: any;
+    fbAsyncInit: Function;
   }
 }
