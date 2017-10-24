@@ -25,6 +25,7 @@ export default class extends React.Component<any, any> {
         data-show-faces="false"
         data-auto-logout-link="false"
         data-use-continue-as="false"
+        data-scope="public_profile,email"
       />
     );
   }
