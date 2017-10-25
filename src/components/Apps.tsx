@@ -12,7 +12,6 @@ import {
   getAppUsers,
   getAppGroups,
 } from 'services';
-import Nav from 'components/Nav';
 import List from 'components/List';
 import Content from 'components/Content';
 
@@ -81,7 +80,6 @@ export default class extends React.Component<any, any> {
 
     return (
       <div className={`row ${css(styles.container)}`}>
-        <Nav />
         <List
           Component={App}
           getKey={item => item.id}
