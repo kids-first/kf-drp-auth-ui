@@ -14,7 +14,6 @@ import {
 } from 'services';
 
 import ListPane from 'components/ListPane';
-import ListItem from 'components/ListItem';
 import Content from 'components/Content';
 import EmptyContent from 'components/EmptyContent';
 

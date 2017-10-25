@@ -16,7 +16,6 @@ import {
 import ListPane from 'components/ListPane';
 import Content from 'components/Content';
 import EmptyContent from 'components/EmptyContent';
-import ListItem from 'components/ListItem';
 
 import Associator from 'components/Associator/Associator';
 
@@ -29,11 +28,23 @@ const styles = {
   },
 };
 
-const App = ({ item: { name }, style, ...props }) => {
+const App = ({ item: { name }, style, className = '', ...props }) => {
   return (
-    <ListItem style={{ fontSize: 20, ...style }} {...props}>
+    <div
+      className={`${className} ${css(
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '10px 0',
+          fontSize: 20,
+        },
+        style,
+      )}`}
+      {...props}
+    >
       {name}
-    </ListItem>
+    </div>
   );
 };
 

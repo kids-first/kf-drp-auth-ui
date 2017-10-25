@@ -16,7 +16,6 @@ import ListPane from 'components/ListPane';
 import Content from 'components/Content';
 import EmptyContent from 'components/EmptyContent';
 import Associator from 'components/Associator/Associator';
-import ListItem from 'components/ListItem';
 import { removeGroupFromUser } from '../services/updateUser';
 
 const styles = {
@@ -28,11 +27,23 @@ const styles = {
   },
 };
 
-const Group = ({ item: { name }, style, ...props }) => {
+const Group = ({ item: { name }, className = '', style, ...props }) => {
   return (
-    <ListItem style={{ ...style, fontSize: 20 }} {...props}>
+    <div
+      className={`${className} ${css(
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '10px 0',
+          fontSize: 20,
+        },
+        style,
+      )}`}
+      {...props}
+    >
       {name}
-    </ListItem>
+    </div>
   );
 };
 
