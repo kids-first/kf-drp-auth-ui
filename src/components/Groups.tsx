@@ -100,7 +100,7 @@ export default class extends React.Component<any, any> {
           }}
         />
         {!currentGroup ? (
-          <EmptyContent type="group" />
+          <EmptyContent message="Please select a group" />
         ) : (
           <Content
             data={{

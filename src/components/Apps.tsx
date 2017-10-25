@@ -93,7 +93,7 @@ export default class extends React.Component<any, any> {
           }}
         />
         {!currentApp ? (
-          <EmptyContent type="application" />
+          <EmptyContent message="Please select an application" />
         ) : (
           <Content
             data={{

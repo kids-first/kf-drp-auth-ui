@@ -99,7 +99,7 @@ export default class extends React.Component<any, any> {
           }}
         />
         {!currentUser ? (
-          <EmptyContent type="user" />
+          <EmptyContent message="Please select a user" />
         ) : (
           <Content
             data={{
