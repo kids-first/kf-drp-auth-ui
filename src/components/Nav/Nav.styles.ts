@@ -49,11 +49,11 @@ const styles = {
       top: 0,
       left: 0,
       height: '100%',
-      width: 'calc(100% + 6px)',
+      width: '100%',
       padding: '0.5em 0.5em',
-      transition: 'opacity 0.15s, transform 0.3s',
-      transform: 'translateX(-50px)',
-      boxShadow: '-3px 3px 1px 1px rgba(0, 0, 0, 0.1)',
+      transition: 'opacity 0.15s, transform 0.2s 0.15s, box-shadow 0.2s 0.15s',
+      transform: 'scaleX(1) scaleY(1)',
+      boxShadow: '-3px 0px 1px 1px rgba(0, 0, 0, 0.1)',
       opacity: 0,
     },
     '&:hover': {
@@ -61,8 +61,12 @@ const styles = {
       backgroundColor: '#771872',
     },
     '&.active': {
+      '& span': {
+        textShadow: '-3px 2px 2px rgba(0,0,0,0.2)',
+      },
       '&::before': {
-        transform: 'translateX(0)',
+        transform: 'scaleX(1.03) scaleY(1.05)',
+        boxShadow: '-3px 3px 1px 1px rgba(0, 0, 0, 0.1)',
         opacity: 1,
       },
     },
