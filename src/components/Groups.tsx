@@ -13,7 +13,7 @@ import {
 } from 'services';
 import List from 'components/List';
 import Content from 'components/Content';
-import Associator from 'components/ItemList/Associator';
+import Associator from 'components/Associator/Associator';
 import { removeGroupFromUser } from '../services/updateUser';
 
 const styles = {

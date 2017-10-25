@@ -15,7 +15,7 @@ import {
 import List from 'components/List';
 import Content from 'components/Content';
 
-import Associator from 'components/ItemList/Associator';
+import Associator from 'components/Associator/Associator';
 
 const styles = {
   container: {
