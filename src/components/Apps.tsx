@@ -12,10 +12,10 @@ import {
   getAppUsers,
   getAppGroups,
 } from 'services';
-import List from 'components/List';
+import ListPane from 'components/ListPane';
 import Content from 'components/Content';
 
-import Associator from 'components/ItemList/Associator';
+import Associator from 'components/Associator/Associator';
 
 const styles = {
   container: {
@@ -80,7 +80,7 @@ export default class extends React.Component<any, any> {
 
     return (
       <div className={`row ${css(styles.container)}`}>
-        <List
+        <ListPane
           Component={App}
           getKey={item => item.id}
           getData={getApps}
