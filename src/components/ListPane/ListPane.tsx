@@ -29,6 +29,7 @@ const enhance = compose(
     columnWidth: 200,
     rowHeight: 60,
     getKey: item => item.id,
+    onSelect: _.noop,
   }),
   withSize({
     refreshRate: 20,
@@ -74,7 +75,11 @@ class List extends React.Component<IListProps, IListState> {
   }
 
   componentDidUpdate(prevProps: IListProps, prevState: IListState) {
-    if (prevProps.pageSize !== this.props.pageSize || prevState.offset !== this.state.offset) {
+    if (
+      prevProps.pageSize !== this.props.pageSize ||
+      prevState.offset !== this.state.offset ||
+      prevProps.getData !== this.props.getData
+    ) {
       this.fetchData();
     }
   }

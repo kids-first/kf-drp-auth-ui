@@ -28,7 +28,7 @@ const styles = {
   },
 };
 
-const App = ({ item: { name }, style, className = '', ...props }) => {
+export const AppListItem = ({ item: { name }, style, className = '', ...props }) => {
   return (
     <div
       className={`${className} ${css(
@@ -92,7 +92,7 @@ export default class extends React.Component<any, any> {
     return (
       <div className={`row ${css(styles.container)}`}>
         <ListPane
-          Component={App}
+          Component={AppListItem}
           getData={getApps}
           selectedItem={currentApp}
           onSelect={app => {
