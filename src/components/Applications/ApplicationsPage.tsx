@@ -61,7 +61,6 @@ export default class extends React.Component<any, any> {
               fieldName: 'users',
               fieldValue: ({ data }) => (
                 <AssociatorFetchInitial
-                  key={`${data.id}-users`}
                   fetchInitial={() => getAppUsers(data.id)}
                   fetchItems={getUsers}
                   onAdd={user => addApplicationToUser({ application: data, user })}
@@ -73,7 +72,6 @@ export default class extends React.Component<any, any> {
               fieldName: 'groups',
               fieldValue: ({ data }) => (
                 <AssociatorFetchInitial
-                  key={`${data.id}-groups`}
                   fetchInitial={() => getAppGroups(data.id)}
                   fetchItems={getGroups}
                   onAdd={group => addApplicationToGroup({ application: data, group })}

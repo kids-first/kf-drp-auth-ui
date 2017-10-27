@@ -40,7 +40,7 @@ export default ({ rows, data }) => {
           const { fieldName, fieldValue } = normalizeRow(row, data);
 
           return (
-            <Table.Row key={fieldName} style={{ verticalAlign: 'baseline' }}>
+            <Table.Row key={`${data.id}-${fieldName}`} style={{ verticalAlign: 'baseline' }}>
               <Table.Cell
                 style={{
                   fontSize: '0.65em',
