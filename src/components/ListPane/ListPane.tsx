@@ -35,8 +35,8 @@ const enhance = compose(
     refreshRate: 20,
     monitorHeight: true,
   }),
-  withProps(({ columnWidth, rowHeight }) => ({
-    styles: styles({ columnWidth, rowHeight }),
+  withProps(({ columnWidth, rowHeight, styles: stylesProp }) => ({
+    styles: _.merge(styles({ columnWidth, rowHeight }), [stylesProp]),
   })),
   withPropsOnChange(
     (props, nextProps) =>
