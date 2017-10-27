@@ -7,9 +7,9 @@ const styles = {
     color: '#fff',
     width: 240,
     padding: '30px 50px',
-    flex: 'none',
     display: 'flex',
     flexDirection: 'column',
+    flexShrink: 0,
   },
 
   logo: {
