@@ -12,6 +12,7 @@ import {
   addApplicationToUser,
   removeApplicationFromUser,
   getApps,
+  updateUser,
 } from 'services';
 
 import ListPane from 'components/ListPane';
@@ -59,6 +60,7 @@ export default class extends React.Component<any, any> {
           id={id}
           emptyMessage="Please select a user"
           getData={getUser}
+          updateData={({ data }) => updateUser({ user: data })}
           rows={[
             'id',
             'firstName',
@@ -71,23 +73,49 @@ export default class extends React.Component<any, any> {
             'preferredLanguage',
             {
               fieldName: 'groups',
-              fieldValue: ({ data }) => (
+              fieldValue: ({ data, editing, onChange }) => (
                 <AssociatorFetchInitial
+                  editing={editing}
                   fetchInitial={() => getUserGroups(data.id)}
                   fetchItems={getGroups}
-                  onAdd={group => addGroupToUser({ user: data, group })}
-                  onRemove={group => removeGroupFromUser({ user: data, group })}
+                  onChange={({ initial, all }) => {
+                    onChange({
+                      groups: () =>
+                        Promise.all([
+                          ...all
+                            .filter(g => !initial.includes(g))
+                            .map(group => addGroupToUser({ user: data, group })),
+                          ...initial
+                            .filter(g => !all.includes(g))
+                            .map(group => removeGroupFromUser({ user: data, group })),
+                        ]),
+                    });
+                  }}
                 />
               ),
             },
             {
               fieldName: 'applications',
-              fieldValue: ({ data }) => (
+              fieldValue: ({ data, editing, onChange }) => (
                 <AssociatorFetchInitial
+                  editing={editing}
                   fetchInitial={() => getUserApplications(data.id)}
                   fetchItems={getApps}
-                  onAdd={application => addApplicationToUser({ user: data, application })}
-                  onRemove={application => removeApplicationFromUser({ user: data, application })}
+                  onChange={({ initial, all }) => {
+                    onChange({
+                      applications: () =>
+                        Promise.all([
+                          ...all
+                            .filter(g => !initial.includes(g))
+                            .map(application => addApplicationToUser({ user: data, application })),
+                          ...initial
+                            .filter(g => !all.includes(g))
+                            .map(application =>
+                              removeApplicationFromUser({ user: data, application }),
+                            ),
+                        ]),
+                    });
+                  }}
                 />
               ),
             },

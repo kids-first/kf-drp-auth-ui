@@ -21,6 +21,7 @@ const enhance = compose(
     getKey: item => _.get(item, 'id'),
     onAdd: _.noop,
     onRemove: _.noop,
+    onChange: _.noop,
   }),
   withStateHandlers(
     ({ initialItems }) => ({
@@ -30,16 +31,19 @@ const enhance = compose(
       setItemsInList: () => items => ({
         itemsInList: items,
       }),
-      addItem: ({ itemsInList }, { onAdd }) => item => {
+      addItem: ({ itemsInList }, { onAdd, onChange, initialItems }) => item => {
+        const newItemInList = itemsInList.concat(item);
         onAdd(item);
+        onChange({ initial: initialItems, all: newItemInList });
 
         return {
-          itemsInList: itemsInList.concat(item),
+          itemsInList: newItemInList,
         };
       },
-      removeItem: ({ itemsInList }, { onRemove }) => item => {
+      removeItem: ({ itemsInList }, { onRemove, onChange, initialItems }) => item => {
+        const newItemInList = _.without(itemsInList, item);
         onRemove(item);
-
+        onChange({ initial: initialItems, all: newItemInList });
         return {
           itemsInList: _.without(itemsInList, item),
         };
@@ -48,18 +52,20 @@ const enhance = compose(
   ),
 );
 
-const render = ({ addItem, itemsInList, removeItem, getName, getKey, fetchItems }) => {
+const render = ({ addItem, itemsInList, removeItem, getName, getKey, fetchItems, editing }) => {
   return (
     <div className={`Associator ${css(styles.container)}`}>
-      <ItemSelector
-        fetchItems={args => fetchItems({ ...args, limit: 10 })}
-        onSelect={addItem}
-        disabledItems={itemsInList}
-      />
+      {editing && (
+        <ItemSelector
+          fetchItems={args => fetchItems({ ...args, limit: 10 })}
+          onSelect={addItem}
+          disabledItems={itemsInList}
+        />
+      )}
       {itemsInList.map(item => (
         <Label key={getKey(item)} style={{ marginBottom: '0.27em' }}>
           {getName(item)}
-          <Icon name="delete" onClick={() => removeItem(item)} />
+          {editing && <Icon name="delete" onClick={() => removeItem(item)} />}
         </Label>
       ))}
     </div>
