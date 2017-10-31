@@ -145,7 +145,7 @@ const render = props => {
               <Aux>
                 <ListPane
                   Component={resource.ListItem}
-                  getData={resource.getData}
+                  getData={() => getGroupUsers(groupId)}
                   rowHeight={resource.rowHeight}
                   onSelect={user => {
                     if (user.id.toString() === userId) {
