@@ -30,6 +30,7 @@ import RESOURCE_MAP from 'common/RESOURCE_MAP';
 import GroupListItem from 'components/Groups/ListItem';
 import UserListItem from 'components/Users/ListItem';
 import AppListItem from 'components/Applications/ListItem';
+import { NavLink } from 'react-router-dom';
 
 const styles = {
   container: {
@@ -108,12 +109,27 @@ const render = props => {
             {
               fieldName: 'users',
               fieldValue: ({ data }) => (
-                <AssociatorFetchInitial
-                  fetchInitial={() => getGroupUsers(data.id)}
-                  fetchItems={getUsers}
-                  onAdd={user => addGroupToUser({ user, group: data })}
-                  onRemove={user => removeGroupFromUser({ user, group: data })}
-                />
+                <Aux>
+                  <AssociatorFetchInitial
+                    fetchInitial={() => getGroupUsers(data.id)}
+                    fetchItems={getUsers}
+                    onAdd={user => addGroupToUser({ user, group: data })}
+                    onRemove={user => removeGroupFromUser({ user, group: data })}
+                  />
+                  <NavLink
+                    className={`view-all ${css({
+                      fontSize: 14,
+                      '&:not(.active)': {
+                        cursor: 'pointer',
+                        '&:hover': { textDecoration: 'underline' },
+                      },
+                    })}`}
+                    activeClass="active"
+                    to={`/groups/${groupId}/users`}
+                  >
+                    view all
+                  </NavLink>
+                </Aux>
               ),
             },
             {
