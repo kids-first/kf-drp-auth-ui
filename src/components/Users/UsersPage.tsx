@@ -1,23 +1,11 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import {
-  getUsers,
-  getUser,
-  getGroups,
-  addGroupToUser,
-  removeGroupFromUser,
-  getUserGroups,
-  getUserApplications,
-  addApplicationToUser,
-  removeApplicationFromUser,
-  getApps,
-  updateUser,
-} from 'services';
+import { getUsers, getGroups, getApps } from 'services';
 
 import ListPane from 'components/ListPane';
 import Content from 'components/Content';
-import { AssociatorFetchInitial } from 'components/Associator/Associator';
+import Associator from 'components/Associator/Associator';
 
 import ListItem from './ListItem';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
@@ -33,7 +21,7 @@ const styles = {
   },
 };
 
-export default class extends React.Component<any, any> {
+class UsersPage extends React.Component<any, any> {
   render() {
     const id = this.props.match.params.id;
 
@@ -58,9 +46,8 @@ export default class extends React.Component<any, any> {
         />
         <Content
           id={id}
+          type="users"
           emptyMessage="Please select a user"
-          getData={getUser}
-          updateData={({ data }) => updateUser({ user: data })}
           rows={[
             'id',
             'firstName',
@@ -72,50 +59,28 @@ export default class extends React.Component<any, any> {
             'lastLogin',
             'preferredLanguage',
             {
-              fieldName: 'groups',
-              fieldValue: ({ data, editing, onChange }) => (
-                <AssociatorFetchInitial
-                  editing={editing}
-                  fetchInitial={() => getUserGroups(data.id)}
-                  fetchItems={getGroups}
-                  onChange={({ initial, all }) => {
-                    onChange({
-                      groups: () =>
-                        Promise.all([
-                          ...all
-                            .filter(g => !initial.includes(g))
-                            .map(group => addGroupToUser({ user: data, group })),
-                          ...initial
-                            .filter(g => !all.includes(g))
-                            .map(group => removeGroupFromUser({ user: data, group })),
-                        ]),
-                    });
-                  }}
-                />
-              ),
+              key: 'groups',
+              fieldContent: ({ associated, editing, stageChange }) => {
+                return (
+                  <Associator
+                    initialItems={associated.groups.resultSet}
+                    editing={editing}
+                    fetchItems={getGroups}
+                    onAdd={item => stageChange({ groups: { add: item } })}
+                    onRemove={item => stageChange({ groups: { remove: item } })}
+                  />
+                );
+              },
             },
             {
-              fieldName: 'applications',
-              fieldValue: ({ data, editing, onChange }) => (
-                <AssociatorFetchInitial
+              key: 'applications',
+              fieldContent: ({ associated, editing, stageChange }) => (
+                <Associator
+                  initialItems={associated.apps.resultSet}
                   editing={editing}
-                  fetchInitial={() => getUserApplications(data.id)}
                   fetchItems={getApps}
-                  onChange={({ initial, all }) => {
-                    onChange({
-                      applications: () =>
-                        Promise.all([
-                          ...all
-                            .filter(g => !initial.includes(g))
-                            .map(application => addApplicationToUser({ user: data, application })),
-                          ...initial
-                            .filter(g => !all.includes(g))
-                            .map(application =>
-                              removeApplicationFromUser({ user: data, application }),
-                            ),
-                        ]),
-                    });
-                  }}
+                  onAdd={item => stageChange({ apps: { add: item } })}
+                  onRemove={item => stageChange({ apps: { remove: item } })}
                 />
               ),
             },
@@ -125,3 +90,5 @@ export default class extends React.Component<any, any> {
     );
   }
 }
+
+export default UsersPage;

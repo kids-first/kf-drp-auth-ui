@@ -4,6 +4,9 @@ import { css } from 'glamor';
 import EmptyContent from 'components/EmptyContent';
 import ContentTable from './ContentTable';
 import EditingContentTable from './EditingContentTable';
+import { compose } from 'recompose';
+import { provideThing } from 'stateProviders';
+import { injectState } from 'freactal';
 
 const styles = {
   container: {
@@ -14,48 +17,47 @@ const styles = {
   },
 };
 
-const INITIAL_STATE = { data: null, editing: false, saving: false };
-export default class Content extends React.Component<any, any> {
-  state = INITIAL_STATE;
-  content = { save: () => Promise.resolve() };
-  fetchData = async ({ getData, id }) => {
-    const data = await getData(id);
+const INITIAL_STATE = { entity: null, editing: false, saving: false };
 
-    this.setState({ ...INITIAL_STATE, data });
+const enhance = compose(provideThing, injectState);
+
+class Content extends React.Component<any, any> {
+  state = INITIAL_STATE;
+
+  fetchData = async ({ id, effects: { setItem }, type }) => {
+    await setItem(id, type);
+    this.setState({ ...INITIAL_STATE });
   };
 
   componentDidMount() {
-    if (this.props.id) {
-      this.fetchData(this.props);
-    }
+    this.fetchData(this.props);
   }
 
   componentWillReceiveProps(nextProps: any) {
-    const id = nextProps.id;
+    const { id } = nextProps;
     if (id !== this.props.id) {
-      if (id) {
-        this.fetchData(nextProps);
-      } else {
-        this.setState(INITIAL_STATE);
-      }
+      this.fetchData(nextProps);
     }
   }
 
   render() {
-    const { rows, styles: stylesProp = {}, id, emptyMessage } = this.props;
-    const data = this.state.data as any;
+    const {
+      rows,
+      styles: stylesProp = {},
+      id,
+      emptyMessage,
+      effects: { saveChanges },
+      state: { item },
+    } = this.props;
 
     return (
       <div className={`Content ${css(styles.container, stylesProp)}`}>
         <button
-          onClick={() => {
+          onClick={async () => {
             if (this.state.editing) {
               this.setState({ saving: true });
-
-              this.content
-                .save()
-                .then(() => this.fetchData(this.props))
-                .then(() => this.setState({ saving: false, editing: false, updates: null }));
+              await saveChanges();
+              this.setState({ saving: false, editing: false, updates: null });
             } else {
               this.setState({ editing: true });
             }
@@ -66,19 +68,19 @@ export default class Content extends React.Component<any, any> {
         {this.state.editing && (
           <button onClick={() => this.setState({ editing: false, updates: null })}>cancel</button>
         )}
-        {!id || !data ? (
-          <EmptyContent message={!id ? emptyMessage : 'loading'} />
+
+        {!id ? (
+          <EmptyContent message={emptyMessage} />
+        ) : !item ? (
+          <EmptyContent message={'loading'} />
         ) : this.state.editing ? (
-          <EditingContentTable
-            rows={rows}
-            data={data}
-            ref={r => (this.content = r)}
-            updateData={this.props.updateData}
-          />
+          <EditingContentTable rows={rows} />
         ) : (
-          <ContentTable rows={rows} data={data} />
+          <ContentTable rows={rows} />
         )}
       </div>
     );
   }
 }
+
+export default enhance(Content);

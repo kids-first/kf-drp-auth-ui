@@ -28,8 +28,8 @@ function remove({ user, key, value }: any) {
   }
 }
 
-export const updateUser = ({ user }) => {
-  return ajax.put(`/users/${user.id}`, _.omit(user, BLOCKED_KEYS)).then(r => r.data);
+export const updateUser = ({ item }) => {
+  return ajax.put(`/users/${item.id}`, _.omit(item, BLOCKED_KEYS)).then(r => r.data);
 };
 
 export const addGroupToUser = ({ user, group }) => {
@@ -46,4 +46,9 @@ export const addApplicationToUser = ({ user, application }) => {
 
 export const removeApplicationFromUser = ({ user, application }) => {
   return remove({ user, key: 'applications', value: application.id });
+};
+
+export const diffAndSaveUser = ({ user, changes }) => {
+  console.log(user, changes);
+  return Promise.resolve();
 };

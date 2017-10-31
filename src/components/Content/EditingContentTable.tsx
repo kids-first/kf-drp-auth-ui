@@ -1,86 +1,71 @@
 import React from 'react';
 import _ from 'lodash';
 import { Table } from 'semantic-ui-react';
+import { compose } from 'recompose';
+import { injectState } from 'freactal';
 
 const UNEDITABLE_KEYS = ['id'];
 
 function normalizeRow({
   row,
   data,
-  updateData,
-  addChange,
+  associated,
+  stageChange,
 }: {
-  row: string | { fieldName: any; fieldValue: any };
+  row: string | { key: string; fieldName: any; fieldContent: any };
   data: Object[];
-  updateData: Function;
-  addChange: Function;
+  associated: Object[];
+  stageChange: Function;
 }) {
   const rowData =
     typeof row === 'string'
       ? {
+          key: row,
           fieldName: row,
-          fieldValue: UNEDITABLE_KEYS.includes(row) ? (
+          fieldContent: UNEDITABLE_KEYS.includes(row) ? (
             data[row] || ''
           ) : (
             <input
-              onChange={e => updateData({ [row]: e.target.value })}
-              type="test"
+              onChange={e => stageChange({ [row]: e.target.value })}
+              type="text"
               value={data[row] || ''}
             />
           ),
         }
-      : row;
+      : { ...row, fieldName: row.fieldName || row.key };
 
   return {
+    ...rowData,
     fieldName:
-      typeof rowData.fieldName === 'function'
-        ? rowData.fieldName({ data, editing: true, onChange: addChange })
-        : _.upperCase(rowData.fieldName),
-    fieldValue:
-      typeof rowData.fieldValue === 'function'
-        ? rowData.fieldValue({ data, editing: true, onChange: addChange })
-        : rowData.fieldValue,
+      typeof rowData.key === 'function'
+        ? rowData.key({ associated, data, editing: true, stageChange })
+        : _.upperCase(rowData.key),
+    fieldContent:
+      typeof rowData.fieldContent === 'function'
+        ? rowData.fieldContent({ associated, data, editing: true, stageChange })
+        : rowData.fieldContent,
   };
 }
 
-class EditingContentTable extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      data: props.data,
-      additionalChanges: {},
-    };
-  }
-  save = () => {
-    const { data, additionalChanges } = this.state;
-    return Promise.all([
-      Promise.all(Object.keys(additionalChanges).map(key => additionalChanges[key]())),
-      this.props.updateData({ data }),
-    ]);
-  };
+const enhance = compose(injectState);
 
+class EditingContentTable extends React.Component<any, any> {
   render() {
-    const { rows } = this.props;
-    const { data, additionalChanges } = this.state;
+    const { rows, state: { staged, associated }, effects: { stageChange } } = this.props;
 
     return (
       <Table basic="very" style={{ fontSize: 18 }}>
         <Table.Body>
           {rows.map(row => {
-            const { fieldName, fieldValue } = normalizeRow({
+            const { key, fieldName, fieldContent } = normalizeRow({
               row,
-              data,
-              addChange: change => {
-                this.setState({ additionalChanges: { ...additionalChanges, ...change } });
-              },
-              updateData: change => {
-                const newData = { ...data, ...change };
-                this.setState({ data: newData });
-              },
+              data: staged,
+              associated,
+              stageChange,
             });
 
             return (
-              <Table.Row key={`${data.id}-${fieldName}`} style={{ verticalAlign: 'baseline' }}>
+              <Table.Row key={`${staged.id}-${key}`} style={{ verticalAlign: 'baseline' }}>
                 <Table.Cell
                   style={{
                     fontSize: '0.65em',
@@ -91,7 +76,7 @@ class EditingContentTable extends React.Component<any, any> {
                 >
                   {fieldName}
                 </Table.Cell>
-                <Table.Cell style={{ border: 'none' }}>{fieldValue}</Table.Cell>
+                <Table.Cell style={{ border: 'none' }}>{fieldContent}</Table.Cell>
               </Table.Row>
             );
           })}
@@ -100,4 +85,5 @@ class EditingContentTable extends React.Component<any, any> {
     );
   }
 }
-export default EditingContentTable;
+
+export default enhance(EditingContentTable);

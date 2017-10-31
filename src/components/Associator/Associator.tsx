@@ -21,7 +21,6 @@ const enhance = compose(
     getKey: item => _.get(item, 'id'),
     onAdd: _.noop,
     onRemove: _.noop,
-    onChange: _.noop,
   }),
   withStateHandlers(
     ({ initialItems }) => ({
@@ -31,19 +30,16 @@ const enhance = compose(
       setItemsInList: () => items => ({
         itemsInList: items,
       }),
-      addItem: ({ itemsInList }, { onAdd, onChange, initialItems }) => item => {
-        const newItemInList = itemsInList.concat(item);
+      addItem: ({ itemsInList }, { onAdd }) => item => {
         onAdd(item);
-        onChange({ initial: initialItems, all: newItemInList });
 
         return {
-          itemsInList: newItemInList,
+          itemsInList: itemsInList.concat(item),
         };
       },
-      removeItem: ({ itemsInList }, { onRemove, onChange, initialItems }) => item => {
-        const newItemInList = _.without(itemsInList, item);
+      removeItem: ({ itemsInList }, { onRemove }) => item => {
         onRemove(item);
-        onChange({ initial: initialItems, all: newItemInList });
+
         return {
           itemsInList: _.without(itemsInList, item),
         };
