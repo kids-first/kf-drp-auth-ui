@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Table } from 'semantic-ui-react';
+import { Table, Input } from 'semantic-ui-react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
@@ -25,8 +25,9 @@ function normalizeRow({
           fieldContent: UNEDITABLE_KEYS.includes(row) ? (
             data[row] || ''
           ) : (
-            <input
-              onChange={e => stageChange({ [row]: e.target.value })}
+            <Input
+              size="mini"
+              onChange={(e, { value }) => stageChange({ [row]: value })}
               type="text"
               value={data[row] || ''}
             />

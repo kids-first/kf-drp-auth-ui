@@ -21,6 +21,7 @@ const styles = {
   content: {
     paddingLeft: 60,
     paddingRight: 60,
+    paddingTop: 30,
   },
 };
 
@@ -60,24 +61,28 @@ class Content extends React.Component<any, any> {
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
         <ControlContainer style={styles.controls}>
-          {!this.state.editing && (
-            <Button basic color="blue" onClick={() => this.setState({ editing: true })}>
-              Edit
-            </Button>
-          )}
+          <div>
+            {!this.state.editing &&
+              id && (
+                <Button color="blue" onClick={() => this.setState({ editing: true })}>
+                  Edit
+                </Button>
+              )}
+            {!this.state.editing && (
+              <Button basic color="green" onClick={() => {}}>
+                Create
+              </Button>
+            )}
+          </div>
 
           {this.state.editing && (
             <Aux>
-              <Button
-                basic
-                color="blue"
-                onClick={() => this.setState({ editing: false, updates: null })}
-              >
+              <Button basic onClick={() => this.setState({ editing: false, updates: null })}>
                 Cancel
               </Button>
               <Button
-                basic
                 color="blue"
+                style={{ marginLeft: 'auto' }}
                 onClick={async () => {
                   if (this.state.editing) {
                     this.setState({ saving: true });

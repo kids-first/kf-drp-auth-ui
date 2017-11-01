@@ -8,7 +8,6 @@ const paneControls = {
     display: 'flex',
     minHeight: 70,
     alignItems: 'center',
-    justifyContent: 'flex-end',
   },
 };
 
