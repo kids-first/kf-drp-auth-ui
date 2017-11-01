@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 import { provideThing } from 'stateProviders';
 import { injectState } from 'freactal';
 import ControlContainer from 'components/ControlsContainer';
+import Aux from 'components/Aux';
 
 const styles = {
   container: {
@@ -16,6 +17,7 @@ const styles = {
     boxShadow: '-2px 0 12px 0 rgba(0,0,0,0.1)',
     position: 'relative',
   },
+  controls: { paddingRight: 24, paddingLeft: 24, justifyContent: 'space-between' },
   content: {
     paddingLeft: 60,
     paddingRight: 60,
@@ -57,22 +59,38 @@ class Content extends React.Component<any, any> {
 
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
-        <ControlContainer>
-          <Button
-            onClick={async () => {
-              if (this.state.editing) {
-                this.setState({ saving: true });
-                await saveChanges();
-                this.setState({ saving: false, editing: false, updates: null });
-              } else {
-                this.setState({ editing: true });
-              }
-            }}
-          >
-            {this.state.editing ? 'save' : 'edit'}
-          </Button>
+        <ControlContainer style={styles.controls}>
+          {!this.state.editing && (
+            <Button basic color="blue" onClick={() => this.setState({ editing: true })}>
+              Edit
+            </Button>
+          )}
+
           {this.state.editing && (
-            <Button onClick={() => this.setState({ editing: false, updates: null })}>cancel</Button>
+            <Aux>
+              <Button
+                basic
+                color="blue"
+                onClick={() => this.setState({ editing: false, updates: null })}
+              >
+                Cancel
+              </Button>
+              <Button
+                basic
+                color="blue"
+                onClick={async () => {
+                  if (this.state.editing) {
+                    this.setState({ saving: true });
+                    await saveChanges();
+                    this.setState({ saving: false, editing: false, updates: null });
+                  } else {
+                    this.setState({ editing: true });
+                  }
+                }}
+              >
+                Save
+              </Button>
+            </Aux>
           )}
         </ControlContainer>
         <div className={`${css(styles.content)}`}>

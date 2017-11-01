@@ -5,9 +5,8 @@ const paneControls = {
   container: {
     backgroundColor: 'rgba(144, 144, 144, 0.05)',
     borderBottom: '1px solid #eaeaea',
-    padding: '20px 24px',
     display: 'flex',
-    minHeight: 90,
+    minHeight: 70,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },

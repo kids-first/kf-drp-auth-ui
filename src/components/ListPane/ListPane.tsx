@@ -79,9 +79,10 @@ const paneControls = {
     marginLeft: 'auto',
     display: 'flex',
     alignItems: 'center',
+    marginRight: 10,
   },
   searchContainer: {
-    marginLeft: 10,
+    marginLeft: 24,
     marginRight: 'auto',
     display: 'flex',
     alignItems: 'center',
