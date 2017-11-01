@@ -8,6 +8,7 @@ import colors from 'common/colors';
 import Pagination from 'components/Pagination';
 import styles from './ListPane.styles';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
+import ControlContainer from 'components/ControlsContainer';
 
 interface IListProps {
   onSelect: Function;
@@ -74,13 +75,6 @@ const enhance = compose(
 );
 
 const paneControls = {
-  container: {
-    backgroundColor: 'rgba(144, 144, 144, 0.05)',
-    borderBottom: '1px solid #eaeaea',
-    padding: '0 0',
-    display: 'flex',
-    minHeight: 80,
-  },
   sortContainer: {
     marginLeft: 'auto',
     display: 'flex',
@@ -158,7 +152,7 @@ class List extends React.Component<IListProps, IListState> {
 
     return (
       <div className={`List ${css(styles.container)}`}>
-        <div className={`pane-controls ${css(paneControls.container)}`}>
+        <ControlContainer>
           <div className={`search-container ${css(paneControls.searchContainer)}`}>
             <Input placeholder="Search..." onChange={(event, { value }) => setQuery(value)} />
           </div>
@@ -192,7 +186,7 @@ class List extends React.Component<IListProps, IListState> {
               />
             </Button.Group>
           </div>
-        </div>
+        </ControlContainer>
         <div className={`items-wrapper`}>
           {items.map(item => (
             <Component

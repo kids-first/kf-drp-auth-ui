@@ -8,22 +8,13 @@ import EditingContentTable from './EditingContentTable';
 import { compose } from 'recompose';
 import { provideThing } from 'stateProviders';
 import { injectState } from 'freactal';
+import ControlContainer from 'components/ControlsContainer';
 
 const styles = {
   container: {
     minWidth: 500,
     boxShadow: '-2px 0 12px 0 rgba(0,0,0,0.1)',
     position: 'relative',
-  },
-  paneControls: {
-    backgroundColor: 'rgba(144, 144, 144, 0.05)',
-    borderBottom: '1px solid #eaeaea',
-    padding: '20px 24px',
-    display: 'flex',
-    minHeight: 80,
-  },
-  controls: {
-    marginLeft: 'auto',
   },
   content: {
     paddingLeft: 60,
@@ -66,28 +57,24 @@ class Content extends React.Component<any, any> {
 
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
-        <div className={`content-controls ${css(styles.paneControls)}`}>
-          <div className={`${css(styles.controls)}`}>
-            <Button
-              onClick={async () => {
-                if (this.state.editing) {
-                  this.setState({ saving: true });
-                  await saveChanges();
-                  this.setState({ saving: false, editing: false, updates: null });
-                } else {
-                  this.setState({ editing: true });
-                }
-              }}
-            >
-              {this.state.editing ? 'save' : 'edit'}
-            </Button>
-            {this.state.editing && (
-              <Button onClick={() => this.setState({ editing: false, updates: null })}>
-                cancel
-              </Button>
-            )}
-          </div>
-        </div>
+        <ControlContainer>
+          <Button
+            onClick={async () => {
+              if (this.state.editing) {
+                this.setState({ saving: true });
+                await saveChanges();
+                this.setState({ saving: false, editing: false, updates: null });
+              } else {
+                this.setState({ editing: true });
+              }
+            }}
+          >
+            {this.state.editing ? 'save' : 'edit'}
+          </Button>
+          {this.state.editing && (
+            <Button onClick={() => this.setState({ editing: false, updates: null })}>cancel</Button>
+          )}
+        </ControlContainer>
         <div className={`${css(styles.content)}`}>
           {!id ? (
             <EmptyContent message={emptyMessage} />
