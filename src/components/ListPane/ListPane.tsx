@@ -79,6 +79,7 @@ const paneControls = {
     borderBottom: '1px solid #eaeaea',
     padding: '0 0',
     display: 'flex',
+    minHeight: 80,
   },
   sortContainer: {
     marginLeft: 'auto',
