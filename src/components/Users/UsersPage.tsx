@@ -32,8 +32,6 @@ const styles = {
   },
 };
 
-const sortableFields = RESOURCE_MAP.users.sortableFields;
-
 export default class extends React.Component<any, any> {
   render() {
     const id = this.props.match.params.id;
@@ -41,9 +39,9 @@ export default class extends React.Component<any, any> {
     return (
       <div className={`row ${css(styles.container)}`}>
         <ListPane
-          sortableFields={sortableFields}
-          initialSortOrder={'DESC'}
-          initialSortField={sortableFields.find(field => field.key === 'lastName')}
+          sortableFields={RESOURCE_MAP.users.sortableFields}
+          initialSortOrder={RESOURCE_MAP.users.initialSortOrder}
+          initialSortField={RESOURCE_MAP.users.initialSortField}
           Component={ListItem}
           columnWidth={200}
           rowHeight={50}
