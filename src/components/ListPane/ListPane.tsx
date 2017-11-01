@@ -4,9 +4,10 @@ import { css } from 'glamor';
 import withSize from 'react-sizeme';
 import { compose, withPropsOnChange, defaultProps, withProps, withState } from 'recompose';
 
+import colors from 'common/colors';
 import Pagination from 'components/Pagination';
 import styles from './ListPane.styles';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Button, Icon } from 'semantic-ui-react';
 
 interface IListProps {
   onSelect: Function;
@@ -73,11 +74,17 @@ const paneControls = {
   container: {
     backgroundColor: 'rgba(144, 144, 144, 0.05)',
     borderBottom: '1px solid #eaeaea',
-    padding: '20px 24px',
+    padding: '0 0',
     display: 'flex',
   },
   sortContainer: {
     marginLeft: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  sortOrderWrapper: {
+    marginLeft: '10px',
+    marginRight: '10px',
   },
 };
 
@@ -148,14 +155,24 @@ class List extends React.Component<IListProps, IListState> {
               onChange={(event, { value }) =>
                 setSortField(sortableFields.find(field => field.key === value))}
             />
-            <Dropdown
-              selection
-              compact
-              selectOnNavigation={false}
-              options={[{ text: 'ASC', value: 'ASC' }, { text: 'DESC', value: 'DESC' }]}
-              text={sortOrder}
-              onChange={(event, { value }) => setSortOrder(value)}
-            />
+            <Button.Group className={`${css(paneControls.sortOrderWrapper)}`} vertical>
+              <Button
+                style={Object.assign(
+                  { paddingBottom: 0, backgroundColor: 'transparent' },
+                  sortOrder === 'ASC' && { color: colors.purple },
+                )}
+                onClick={() => setSortOrder('ASC')}
+                icon="chevron up"
+              />
+              <Button
+                style={Object.assign(
+                  { paddingTop: 0, backgroundColor: 'transparent' },
+                  sortOrder === 'DESC' && { color: colors.purple },
+                )}
+                onClick={() => setSortOrder('DESC')}
+                icon="chevron down"
+              />
+            </Button.Group>
           </div>
         </div>
         <div className={`items-wrapper`}>
