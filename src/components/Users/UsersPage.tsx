@@ -19,6 +19,7 @@ import Content from 'components/Content';
 import { AssociatorFetchInitial } from 'components/Associator/Associator';
 
 import ListItem from './ListItem';
+import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 const styles = {
   container: {
@@ -31,6 +32,8 @@ const styles = {
   },
 };
 
+const sortableFields = RESOURCE_MAP.users.sortableFields;
+
 export default class extends React.Component<any, any> {
   render() {
     const id = this.props.match.params.id;
@@ -38,6 +41,9 @@ export default class extends React.Component<any, any> {
     return (
       <div className={`row ${css(styles.container)}`}>
         <ListPane
+          sortableFields={sortableFields}
+          initialSortOrder={'DESC'}
+          initialSortField={sortableFields.find(field => field.key === 'lastName')}
           Component={ListItem}
           columnWidth={200}
           rowHeight={50}

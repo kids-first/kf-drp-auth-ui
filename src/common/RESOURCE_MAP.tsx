@@ -26,6 +26,14 @@ export default {
     ListItem: UserListItem,
     getData: getUsers,
     rowHeight: 50,
+    sortableFields: [
+      { key: 'email', value: 'Email' },
+      { key: 'role', value: 'Role' },
+      { key: 'firstName', value: 'First Name' },
+      { key: 'lastName', value: 'Last Name' },
+      { key: 'createdAt', value: 'Date Created' },
+      { key: 'lastLogin', value: 'Last Login Date' },
+    ],
   },
   groups: {
     name: 'groups',
