@@ -147,7 +147,7 @@ const render = props => {
                   initialSortField={RESOURCE_MAP.users.initialSortField}
                   selectedItemId={userId}
                   Component={resource.ListItem}
-                  getData={resource.getList}
+                  getData={() => resource.getList({ groupsId: groupId })}
                   rowHeight={resource.rowHeight}
                   onSelect={user => {
                     if (user.id.toString() === userId) {
