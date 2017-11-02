@@ -4,7 +4,7 @@ import { provideState } from 'freactal';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 const provideThing = provideState({
-  initialState: () => ({ item: null, staged: {}, associated: {} }),
+  initialState: () => ({ item: null, staged: {}, associated: {}, valid: false }),
 
   effects: {
     getState: () => state => ({ ...state }),
@@ -19,12 +19,14 @@ const provideThing = provideState({
         : [null, ...RESOURCE_MAP[type].associatedTypes.map(() => ({}))];
 
       return s => {
+        const staged = item || {};
         return {
           ...s,
           type,
           item,
           id,
-          staged: item || {},
+          staged,
+          valid: RESOURCE_MAP[type].schema.filter(f => f.required).every(f => staged[f.key]),
           associated: associated.reduce(
             (acc, a, i) => ({
               ...acc,
@@ -32,16 +34,20 @@ const provideThing = provideState({
             }),
             {},
           ),
-          immutableKeys: RESOURCE_MAP[type].schema.filter(f => f.immutable).map(f => f.key),
         };
       };
     },
     stageChange: async (effects, change) => {
       return state => {
         // TODO: refactor to keep single timeline of changes and reconcile on save.
+        const staged = {
+          ...state.staged,
+          ..._.omit(change, RESOURCE_MAP[state.type].associatedTypes),
+        };
         return {
           ...state,
-          staged: { ...state.staged, ..._.omit(change, RESOURCE_MAP[state.type].associatedTypes) },
+          staged,
+          valid: RESOURCE_MAP[state.type].schema.filter(f => f.required).every(f => staged[f.key]),
           associated: Object.keys(state.associated).reduce((acc, currentType) => {
             if (change[currentType]) {
               return {

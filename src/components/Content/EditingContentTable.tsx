@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Table, Input } from 'semantic-ui-react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
+import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 function normalizeRow({
   row,
@@ -54,10 +55,12 @@ class EditingContentTable extends React.Component<any, any> {
   render() {
     const {
       rows,
-      state: { staged, associated, immutableKeys },
+      state: { staged, associated, type },
       effects: { stageChange },
       hideImmutable,
     } = this.props;
+
+    const immutableKeys = RESOURCE_MAP[type].schema.filter(f => f.immutable).map(f => f.key);
 
     return (
       <Table basic="very" style={{ fontSize: 18 }}>

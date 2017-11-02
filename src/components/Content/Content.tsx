@@ -56,7 +56,7 @@ class Content extends React.Component<any, any> {
       id,
       emptyMessage,
       effects: { saveChanges, setItem },
-      state: { item },
+      state: { item, valid },
       type,
       history,
     } = this.props;
@@ -108,7 +108,7 @@ class Content extends React.Component<any, any> {
               <Button
                 color="blue"
                 style={{ marginLeft: 'auto', fontWeight: 'normal' }}
-                disabled={saving}
+                disabled={saving || !valid}
                 loading={saving}
                 onClick={async () => {
                   this.setState({ saving: true });
