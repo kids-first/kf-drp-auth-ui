@@ -9,20 +9,20 @@ function normalizeRow({
   data,
   associated,
   stageChange,
-  unEditableKeys,
+  immutableKeys,
 }: {
   row: string | { key: string; fieldName: any; fieldContent: any };
   data: Object[];
   associated: Object[];
   stageChange: Function;
-  unEditableKeys: string[];
+  immutableKeys: string[];
 }) {
   const rowData =
     typeof row === 'string'
       ? {
           key: row,
           fieldName: row,
-          fieldContent: unEditableKeys.includes(row) ? (
+          fieldContent: immutableKeys.includes(row) ? (
             data[row] || ''
           ) : (
             <Input
@@ -54,7 +54,7 @@ class EditingContentTable extends React.Component<any, any> {
   render() {
     const {
       rows,
-      state: { staged, associated, unEditableKeys },
+      state: { staged, associated, immutableKeys },
       effects: { stageChange },
       hideImmutable,
     } = this.props;
@@ -63,14 +63,14 @@ class EditingContentTable extends React.Component<any, any> {
       <Table basic="very" style={{ fontSize: 18 }}>
         <Table.Body>
           {rows
-            .filter(field => !hideImmutable || !unEditableKeys.includes(field.key || field))
+            .filter(field => !hideImmutable || !immutableKeys.includes(field.key || field))
             .map(row => {
               const { key, fieldName, fieldContent } = normalizeRow({
                 row,
                 data: staged,
                 associated,
                 stageChange,
-                unEditableKeys,
+                immutableKeys,
               });
 
               return (
