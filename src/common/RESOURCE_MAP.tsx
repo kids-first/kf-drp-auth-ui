@@ -29,14 +29,14 @@ type Schema = { key: string; value: string; sortable: boolean; initialSort: bool
 export default {
   users: {
     schema: [
-      { key: 'id', value: 'ID', sortable: true, unEditable: true },
+      { key: 'id', value: 'ID', sortable: true, immutable: true },
       { key: 'firstName', value: 'First Name', sortable: true },
       { key: 'lastName', value: 'Last Name', sortable: true, initialSort: true },
       { key: 'email', value: 'Email', sortable: true },
       { key: 'role', value: 'Role', sortable: true },
       { key: 'status', value: 'Status' },
-      { key: 'createdAt', value: 'Date Created', sortable: true, unEditable: true },
-      { key: 'lastLogin', value: 'Last Login', sortable: true, unEditable: true },
+      { key: 'createdAt', value: 'Date Created', sortable: true, immutable: true },
+      { key: 'lastLogin', value: 'Last Login', sortable: true, immutable: true },
       { key: 'preferredLanguage', value: 'Preferred Language' },
     ] as Schema,
     name: 'users',
@@ -58,7 +58,7 @@ export default {
   },
   groups: {
     schema: [
-      { key: 'id', value: 'ID', sortable: true, unEditable: true },
+      { key: 'id', value: 'ID', sortable: true, immutable: true },
       { key: 'name', value: 'Name', sortable: true, initialSort: true },
       { key: 'description', value: 'Description', sortable: true },
       { key: 'status', value: 'Status', sortable: true },
@@ -82,7 +82,7 @@ export default {
   },
   apps: {
     schema: [
-      { key: 'id', value: 'ID', sortable: true, unEditable: true },
+      { key: 'id', value: 'ID', sortable: true, immutable: true },
       { key: 'name', value: 'Name', sortable: true, initialSort: true },
       { key: 'clientId', value: 'Client ID', sortable: true },
       { key: 'description', value: 'Description', sortable: true },
