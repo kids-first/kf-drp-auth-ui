@@ -4,25 +4,25 @@ import { Table, Input } from 'semantic-ui-react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
-const IMMUTABLE_KEYS = ['id'];
-
 function normalizeRow({
   row,
   data,
   associated,
   stageChange,
+  unEditableKeys,
 }: {
   row: string | { key: string; fieldName: any; fieldContent: any };
   data: Object[];
   associated: Object[];
   stageChange: Function;
+  unEditableKeys: string[];
 }) {
   const rowData =
     typeof row === 'string'
       ? {
           key: row,
           fieldName: row,
-          fieldContent: IMMUTABLE_KEYS.includes(row) ? (
+          fieldContent: unEditableKeys.includes(row) ? (
             data[row] || ''
           ) : (
             <Input
@@ -52,35 +52,43 @@ const enhance = compose(injectState);
 
 class EditingContentTable extends React.Component<any, any> {
   render() {
-    const { rows, state: { staged, associated }, effects: { stageChange } } = this.props;
+    const {
+      rows,
+      state: { staged, associated, unEditableKeys },
+      effects: { stageChange },
+      hideImmutable,
+    } = this.props;
 
     return (
       <Table basic="very" style={{ fontSize: 18 }}>
         <Table.Body>
-          {rows.map(row => {
-            const { key, fieldName, fieldContent } = normalizeRow({
-              row,
-              data: staged,
-              associated,
-              stageChange,
-            });
+          {rows
+            .filter(field => !hideImmutable || !unEditableKeys.includes(field.key || field))
+            .map(row => {
+              const { key, fieldName, fieldContent } = normalizeRow({
+                row,
+                data: staged,
+                associated,
+                stageChange,
+                unEditableKeys,
+              });
 
-            return (
-              <Table.Row key={`${staged.id}-${key}`} style={{ verticalAlign: 'baseline' }}>
-                <Table.Cell
-                  style={{
-                    fontSize: '0.65em',
-                    border: 'none',
-                    textAlign: 'right',
-                    width: '6em',
-                  }}
-                >
-                  {fieldName}
-                </Table.Cell>
-                <Table.Cell style={{ border: 'none' }}>{fieldContent}</Table.Cell>
-              </Table.Row>
-            );
-          })}
+              return (
+                <Table.Row key={`${staged.id}-${key}`} style={{ verticalAlign: 'baseline' }}>
+                  <Table.Cell
+                    style={{
+                      fontSize: '0.65em',
+                      border: 'none',
+                      textAlign: 'right',
+                      width: '6em',
+                    }}
+                  >
+                    {fieldName}
+                  </Table.Cell>
+                  <Table.Cell style={{ border: 'none' }}>{fieldContent}</Table.Cell>
+                </Table.Row>
+              );
+            })}
         </Table.Body>
       </Table>
     );

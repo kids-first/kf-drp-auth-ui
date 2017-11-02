@@ -18,6 +18,9 @@ import {
   removeUserFromApplication,
   updateApplication,
   updateGroup,
+  createGroup,
+  createUser,
+  createApplication,
 } from 'services';
 
 import GroupListItem from 'components/Groups/ListItem';
@@ -44,6 +47,7 @@ export default {
     getList: getUsers,
     getItem: getUser,
     updateItem: updateUser,
+    createItem: createUser,
     rowHeight: 50,
     initialSortOrder: 'DESC',
     associatedTypes: ['groups', 'apps'],
@@ -73,6 +77,7 @@ export default {
     ListItem: GroupListItem,
     getList: getGroups,
     updateItem: updateGroup,
+    createItem: createGroup,
     getItem: getGroup,
     rowHeight: 44,
     initialSortOrder: 'ASC',
@@ -104,6 +109,7 @@ export default {
     ListItem: AppListItem,
     getList: getApps,
     updateItem: updateApplication,
+    createItem: createApplication,
     getItem: getApp,
     rowHeight: 30,
     initialSortOrder: 'ASC',

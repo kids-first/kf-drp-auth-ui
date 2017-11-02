@@ -4,7 +4,7 @@ import { provideState } from 'freactal';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 const provideThing = provideState({
-  initialState: () => ({ item: null, staged: null, associated: {} }),
+  initialState: () => ({ item: null, staged: {}, associated: {} }),
 
   effects: {
     getState: () => state => ({ ...state }),
@@ -16,7 +16,7 @@ const provideThing = provideState({
               RESOURCE_MAP[associatedType].getList({ [`${type}Id`]: id, limit: 10 }),
             ),
           ])
-        : [null, ...RESOURCE_MAP[type].associatedTypes.map(() => null)];
+        : [null, ...RESOURCE_MAP[type].associatedTypes.map(() => ({}))];
 
       return s => {
         return {
@@ -24,7 +24,7 @@ const provideThing = provideState({
           type,
           item,
           id,
-          staged: item,
+          staged: item || {},
           associated: associated.reduce(
             (acc, a, i) => ({
               ...acc,
@@ -32,6 +32,7 @@ const provideThing = provideState({
             }),
             {},
           ),
+          immutableKeys: RESOURCE_MAP[type].schema.filter(f => f.immutable).map(f => f.key),
         };
       };
     },
@@ -85,23 +86,37 @@ const provideThing = provideState({
       return state => ({ ...state });
     },
     saveChanges: async effects => {
-      const { id, type, staged, associated } = await effects.getState();
-      await Promise.all([
-        RESOURCE_MAP[type].updateItem({ item: staged }),
-        ...Object.keys(associated).map(key => {
-          return Promise.all(
-            ['add', 'remove'].reduce(
-              (acc, action) => [
-                ...acc,
-                ...(associated[key][action] || []).map(filterItem =>
-                  RESOURCE_MAP[type][action][key]({ item: staged, [key]: filterItem }),
-                ),
-              ],
-              [],
-            ),
-          );
-        }),
-      ]);
+      const { type, staged, associated, ...s } = await effects.getState();
+
+      let id = s.id;
+
+      const saveAssociated = item =>
+        Promise.all(
+          Object.keys(associated).map(key => {
+            return Promise.all(
+              ['add', 'remove'].reduce(
+                (acc, action) => [
+                  ...acc,
+                  ...(associated[key][action] || []).map(filterItem =>
+                    RESOURCE_MAP[type][action][key]({ item, [key]: filterItem }),
+                  ),
+                ],
+                [],
+              ),
+            );
+          }),
+        );
+
+      if (!id) {
+        const item = await RESOURCE_MAP[type].createItem({ item: staged });
+        id = item.id;
+        await saveAssociated(item);
+      } else {
+        await Promise.all([
+          RESOURCE_MAP[type].updateItem({ item: staged }),
+          saveAssociated(staged),
+        ]);
+      }
 
       await effects.setItem(id, type);
 
