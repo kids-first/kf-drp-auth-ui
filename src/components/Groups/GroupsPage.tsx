@@ -65,9 +65,9 @@ const render = props => {
         })}`}
       >
         <ListPane
-          sortableFields={RESOURCE_MAP.groups.sortableFields}
+          sortableFields={RESOURCE_MAP.groups.schema.filter(field => field.sortable)}
           initialSortOrder={RESOURCE_MAP.groups.initialSortOrder}
-          initialSortField={RESOURCE_MAP.groups.initialSortField}
+          initialSortField={RESOURCE_MAP.groups.schema.find(field => field.initialSort)}
           Component={GroupListItem}
           getData={getGroups}
           selectedItemId={groupId}
@@ -86,10 +86,7 @@ const render = props => {
           type="groups"
           emptyMessage="Please select a group"
           rows={[
-            'id',
-            'name',
-            'description',
-            'status',
+            ...RESOURCE_MAP.groups.schema.map(f => f.key),
             {
               key: 'users',
               fieldContent: ({ associated, editing, stageChange }) => {
@@ -151,15 +148,7 @@ const render = props => {
                   type="users"
                   emptyMessage="Please select a user"
                   rows={[
-                    'id',
-                    'firstName',
-                    'lastName',
-                    'email',
-                    'role',
-                    'status',
-                    'createdAt',
-                    'lastLogin',
-                    'preferredLanguage',
+                    ...RESOURCE_MAP.users.schema.map(f => f.key),
                     {
                       key: 'groups',
                       fieldContent: ({ associated, editing, stageChange }) => {
