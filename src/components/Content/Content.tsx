@@ -29,12 +29,26 @@ const styles = {
 
 const enhance = compose(provideThing, injectState, withRouter);
 
-class Content extends React.Component<any, any> {
-  state = { contentState: '' };
+enum ContentState {
+  displaying,
+  creating,
+  editing,
+  disabling,
+  deleting,
+  confirmDelete,
+  saving,
+}
+
+interface IContentState {
+  contentState: ContentState;
+}
+
+class Content extends React.Component<any, IContentState> {
+  state = { contentState: ContentState.displaying };
 
   fetchData = async ({ id, effects: { setItem }, type }) => {
     await setItem(id, type);
-    this.setState({ contentState: '' });
+    this.setState({ contentState: ContentState.displaying });
   };
 
   componentDidMount() {
@@ -68,7 +82,7 @@ class Content extends React.Component<any, any> {
         color="green"
         onClick={async () => {
           await setItem(null, type);
-          this.setState({ contentState: 'creating' });
+          this.setState({ contentState: ContentState.creating });
         }}
         size="tiny"
         style={{ fontWeight: 'bold' }}
@@ -80,7 +94,7 @@ class Content extends React.Component<any, any> {
     const EditButton = () => (
       <Button
         color="blue"
-        onClick={() => this.setState({ contentState: 'editing' })}
+        onClick={() => this.setState({ contentState: ContentState.editing })}
         size="tiny"
         style={{ fontWeight: 'normal' }}
       >
@@ -91,13 +105,13 @@ class Content extends React.Component<any, any> {
     const DisableButton = () => (
       <Button
         basic
-        disabled={contentState === 'disabling' || (item || {}).status === 'Disabled'}
-        loading={contentState === 'disabling'}
+        disabled={contentState === ContentState.disabling || (item || {}).status === 'Disabled'}
+        loading={contentState === ContentState.disabling}
         onClick={async () => {
-          this.setState({ contentState: 'disabling' });
+          this.setState({ contentState: ContentState.disabling });
           await stageChange({ status: 'Disabled' });
           await saveChanges();
-          this.setState({ contentState: '' });
+          this.setState({ contentState: ContentState.displaying });
         }}
         size="tiny"
         color="red"
@@ -109,10 +123,10 @@ class Content extends React.Component<any, any> {
 
     const ConfirmDeleteButton = () => (
       <Button
-        disabled={contentState === 'deleting'}
-        loading={contentState === 'deleting'}
+        disabled={contentState === ContentState.deleting}
+        loading={contentState === ContentState.deleting}
         onClick={async () => {
-          this.setState({ contentState: 'deleting' });
+          this.setState({ contentState: ContentState.deleting });
           await deleteItem();
           history.replace(`/${type}`);
         }}
@@ -127,7 +141,7 @@ class Content extends React.Component<any, any> {
     const DeleteButton = () => (
       <Button
         basic
-        onClick={() => this.setState({ contentState: 'confirm-delete' })}
+        onClick={() => this.setState({ contentState: ContentState.confirmDelete })}
         size="tiny"
         color="red"
         style={{ fontWeight: 'bold' }}
@@ -148,7 +162,7 @@ class Content extends React.Component<any, any> {
     );
 
     const SaveButton = () => {
-      const isSaving = contentState === 'saving';
+      const isSaving = contentState === ContentState.saving;
       return (
         <Button
           color="blue"
@@ -156,9 +170,9 @@ class Content extends React.Component<any, any> {
           disabled={isSaving || !valid}
           loading={isSaving}
           onClick={async () => {
-            this.setState({ contentState: 'saving' });
+            this.setState({ contentState: ContentState.saving });
             const newState = await saveChanges();
-            this.setState({ contentState: '' });
+            this.setState({ contentState: ContentState.displaying });
             history.replace(`/${type}/${newState.thing.item.id}`);
           }}
           size="tiny"
@@ -171,7 +185,7 @@ class Content extends React.Component<any, any> {
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
         <ControlContainer style={styles.controls}>
-          {!['editing', 'creating'].includes(contentState) ? (
+          {![ContentState.editing, ContentState.creating].includes(contentState) ? (
             <Aux>
               <div>
                 <CreateButton />
@@ -180,7 +194,7 @@ class Content extends React.Component<any, any> {
               {id &&
                 (RESOURCE_MAP[type].noDelete ? (
                   <DisableButton />
-                ) : contentState === 'confirm-delete' ? (
+                ) : contentState === ContentState.confirmDelete ? (
                   <ConfirmDeleteButton />
                 ) : (
                   <DeleteButton />
@@ -194,13 +208,13 @@ class Content extends React.Component<any, any> {
           )}
         </ControlContainer>
         <div className={`${css(styles.content)}`}>
-          {contentState === 'creating' ? (
+          {contentState === ContentState.creating ? (
             <EditingContentTable rows={rows} hideImmutable />
           ) : !id ? (
             <EmptyContent message={emptyMessage} />
           ) : !item ? (
             <EmptyContent message={'loading'} />
-          ) : contentState === 'editing' ? (
+          ) : contentState === ContentState.editing ? (
             <EditingContentTable rows={rows} />
           ) : (
             <ContentTable rows={rows} />
