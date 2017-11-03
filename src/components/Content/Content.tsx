@@ -11,6 +11,7 @@ import { injectState } from 'freactal';
 import ControlContainer from 'components/ControlsContainer';
 import Aux from 'components/Aux';
 import { withRouter } from 'react-router';
+import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 const styles = {
   container: {
@@ -26,7 +27,7 @@ const styles = {
   },
 };
 
-const INITIAL_STATE = { editing: false, saving: false, creating: false };
+const INITIAL_STATE = { editing: false, saving: false, creating: false, disabling: false };
 
 const enhance = compose(provideThing, injectState, withRouter);
 
@@ -55,42 +56,75 @@ class Content extends React.Component<any, any> {
       styles: stylesProp = {},
       id,
       emptyMessage,
-      effects: { saveChanges, setItem },
+      effects: { saveChanges, setItem, deleteItem, stageChange },
       state: { thing: { item, valid } },
       type,
       history,
     } = this.props;
 
-    const { creating, editing, saving } = this.state;
+    const { creating, editing, saving, disabling } = this.state;
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
         <ControlContainer style={styles.controls}>
           {!editing &&
             !creating && (
-              <div>
-                <Button
-                  basic
-                  color="green"
-                  onClick={async () => {
-                    await setItem(null, type);
-                    this.setState({ creating: true, editing: false });
-                  }}
-                  size="tiny"
-                  style={{ fontWeight: 'bold' }}
-                >
-                  Create
-                </Button>
-                {id && (
+              <Aux>
+                <div>
                   <Button
-                    color="blue"
-                    onClick={() => this.setState({ editing: true, creating: false })}
+                    basic
+                    color="green"
+                    onClick={async () => {
+                      await setItem(null, type);
+                      this.setState({ creating: true, editing: false });
+                    }}
                     size="tiny"
-                    style={{ fontWeight: 'normal' }}
+                    style={{ fontWeight: 'bold' }}
                   >
-                    Edit
+                    Create
+                  </Button>
+                  {id && (
+                    <Button
+                      color="blue"
+                      onClick={() => this.setState({ editing: true, creating: false })}
+                      size="tiny"
+                      style={{ fontWeight: 'normal' }}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </div>
+                {RESOURCE_MAP[type].noDelete ? (
+                  <Button
+                    basic
+                    disabled={disabling || (item || {}).status === 'Disabled'}
+                    loading={disabling}
+                    onClick={async () => {
+                      this.setState({ disabling: true });
+                      await stageChange({ status: 'Disabled' });
+                      await saveChanges();
+                      this.setState({ ...INITIAL_STATE });
+                    }}
+                    size="tiny"
+                    color="red"
+                    style={{ fontWeight: 'bold' }}
+                  >
+                    Disable
+                  </Button>
+                ) : (
+                  <Button
+                    basic
+                    onClick={async () => {
+                      await deleteItem();
+                      history.replace(`/${type}`);
+                    }}
+                    size="tiny"
+                    color="red"
+                    style={{ fontWeight: 'bold' }}
+                  >
+                    Delete
                   </Button>
                 )}
-              </div>
+              </Aux>
             )}
           {(editing || creating) && (
             <Aux>

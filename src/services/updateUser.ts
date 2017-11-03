@@ -52,3 +52,7 @@ export const diffAndSaveUser = ({ user, changes }) => {
   console.log(user, changes);
   return Promise.resolve();
 };
+
+export const deleteUser = ({ item }) => {
+  return ajax.delete(`/users/${item.id}`).then(r => r.data);
+};
