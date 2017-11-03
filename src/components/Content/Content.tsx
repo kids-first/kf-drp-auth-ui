@@ -121,7 +121,6 @@ class Content extends React.Component<any, any> {
                   ) : confirmingDelete ? (
                     <div>
                       <Button
-                        basic
                         disabled={deleting}
                         loading={deleting}
                         onClick={async () => {
@@ -134,18 +133,6 @@ class Content extends React.Component<any, any> {
                         style={{ fontWeight: 'bold' }}
                       >
                         Confirm Delete
-                      </Button>
-                      <Button
-                        basic
-                        disabled={deleting}
-                        onClick={async () => {
-                          await this.fetchData(this.props);
-                          this.setState({ ...INITIAL_STATE });
-                        }}
-                        size="tiny"
-                        style={{ fontWeight: 'bold' }}
-                      >
-                        Cancel
                       </Button>
                     </div>
                   ) : (
