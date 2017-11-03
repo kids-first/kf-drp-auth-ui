@@ -70,6 +70,112 @@ class Content extends React.Component<any, any> {
     } = this.props;
 
     const { creating, editing, saving, disabling, confirmingDelete, deleting } = this.state;
+
+    const CreateButton = () => (
+      <Button
+        basic
+        color="green"
+        onClick={async () => {
+          await setItem(null, type);
+          this.setState({ creating: true, editing: false });
+        }}
+        size="tiny"
+        style={{ fontWeight: 'bold' }}
+      >
+        Create
+      </Button>
+    );
+
+    const EditButton = () => (
+      <Button
+        color="blue"
+        onClick={() => this.setState({ editing: true, creating: false })}
+        size="tiny"
+        style={{ fontWeight: 'normal' }}
+      >
+        Edit
+      </Button>
+    );
+
+    const DisableButton = () => (
+      <Button
+        basic
+        disabled={disabling || (item || {}).status === 'Disabled'}
+        loading={disabling}
+        onClick={async () => {
+          this.setState({ disabling: true });
+          await stageChange({ status: 'Disabled' });
+          await saveChanges();
+          this.setState({ ...INITIAL_STATE });
+        }}
+        size="tiny"
+        color="red"
+        style={{ fontWeight: 'bold' }}
+      >
+        Disable
+      </Button>
+    );
+
+    const ConfirmDeleteButton = () => (
+      <Button
+        disabled={deleting}
+        loading={deleting}
+        onClick={async () => {
+          this.setState({ deleting: true });
+          await deleteItem();
+          history.replace(`/${type}`);
+        }}
+        size="tiny"
+        color="red"
+        style={{ fontWeight: 'bold' }}
+      >
+        Confirm Delete
+      </Button>
+    );
+    const DeleteButton = () => (
+      <Button
+        basic
+        onClick={() => this.setState({ confirmingDelete: true })}
+        size="tiny"
+        color="red"
+        style={{ fontWeight: 'bold' }}
+      >
+        Delete
+      </Button>
+    );
+
+    const CancelButton = () => (
+      <Button
+        basic
+        onClick={async () => {
+          await this.fetchData(this.props);
+          this.setState({ ...INITIAL_STATE });
+        }}
+        size="tiny"
+        style={{ fontWeight: 'bold' }}
+      >
+        Cancel
+      </Button>
+    );
+
+    const SaveButton = () => (
+      <Button
+        color="blue"
+        style={{ marginLeft: 'auto', fontWeight: 'normal' }}
+        disabled={saving || !valid}
+        loading={saving}
+        onClick={async () => {
+          this.setState({ saving: true });
+          const newState = await saveChanges();
+          this.setState({ ...INITIAL_STATE });
+          history.replace(`/${type}/${newState.thing.item.id}`);
+        }}
+        size="tiny"
+      >
+        Save
+      </Button>
+    );
+
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
         <ControlContainer style={styles.controls}>
@@ -77,106 +183,24 @@ class Content extends React.Component<any, any> {
             !creating && (
               <Aux>
                 <div>
-                  <Button
-                    basic
-                    color="green"
-                    onClick={async () => {
-                      await setItem(null, type);
-                      this.setState({ creating: true, editing: false });
-                    }}
-                    size="tiny"
-                    style={{ fontWeight: 'bold' }}
-                  >
-                    Create
-                  </Button>
-                  {id && (
-                    <Button
-                      color="blue"
-                      onClick={() => this.setState({ editing: true, creating: false })}
-                      size="tiny"
-                      style={{ fontWeight: 'normal' }}
-                    >
-                      Edit
-                    </Button>
-                  )}
+                  <CreateButton />
+                  {id && <EditButton />}
                 </div>
                 {id &&
                   (RESOURCE_MAP[type].noDelete ? (
-                    <Button
-                      basic
-                      disabled={disabling || (item || {}).status === 'Disabled'}
-                      loading={disabling}
-                      onClick={async () => {
-                        this.setState({ disabling: true });
-                        await stageChange({ status: 'Disabled' });
-                        await saveChanges();
-                        this.setState({ ...INITIAL_STATE });
-                      }}
-                      size="tiny"
-                      color="red"
-                      style={{ fontWeight: 'bold' }}
-                    >
-                      Disable
-                    </Button>
+                    <DisableButton />
                   ) : confirmingDelete ? (
-                    <div>
-                      <Button
-                        disabled={deleting}
-                        loading={deleting}
-                        onClick={async () => {
-                          this.setState({ deleting: true });
-                          await deleteItem();
-                          history.replace(`/${type}`);
-                        }}
-                        size="tiny"
-                        color="red"
-                        style={{ fontWeight: 'bold' }}
-                      >
-                        Confirm Delete
-                      </Button>
-                    </div>
+                    <ConfirmDeleteButton />
                   ) : (
-                    <Button
-                      basic
-                      onClick={() => this.setState({ confirmingDelete: true })}
-                      size="tiny"
-                      color="red"
-                      style={{ fontWeight: 'bold' }}
-                    >
-                      Delete
-                    </Button>
+                    <DeleteButton />
                   ))}
               </Aux>
             )}
           {(editing || creating) && (
-            <Button
-              basic
-              onClick={async () => {
-                await this.fetchData(this.props);
-                this.setState({ ...INITIAL_STATE });
-              }}
-              size="tiny"
-              style={{ fontWeight: 'bold' }}
-            >
-              Cancel
-            </Button>
-          )}
-          {(editing || creating) && (
-            <Button
-              color="blue"
-              style={{ marginLeft: 'auto', fontWeight: 'normal' }}
-              disabled={saving || !valid}
-              loading={saving}
-              onClick={async () => {
-                this.setState({ saving: true });
-                const newState = await saveChanges();
-                this.setState({ ...INITIAL_STATE });
-                history.replace(`/${type}/${newState.thing.item.id}`);
-              }}
-              size="tiny"
-            >
-              Save
-            </Button>
+            <Aux>
+              <CancelButton />
+              <SaveButton />
+            </Aux>
           )}
         </ControlContainer>
         <div className={`${css(styles.content)}`}>
