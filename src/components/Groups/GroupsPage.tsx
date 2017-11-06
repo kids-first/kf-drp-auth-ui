@@ -4,15 +4,8 @@ import { Route } from 'react-router';
 import { css } from 'glamor';
 import withSize from 'react-sizeme';
 
-import { getGroups, getApps } from 'services';
-import Aux from 'components/Aux';
-import ListPane from 'components/ListPane';
-import Content from 'components/Content';
-import Associator from 'components/Associator/Associator';
-
-import RESOURCE_MAP from 'common/RESOURCE_MAP';
 import GroupListItem from 'components/Groups/ListItem';
-import PageContent from 'components/PageContent';
+import ResourceExplorer from 'components/ResourceExplorer';
 
 const styles = {
   container: {
@@ -65,7 +58,7 @@ const render = props => {
           transform: `translateX(${translateX})`,
         })}`}
       >
-        <PageContent
+        <ResourceExplorer
           id={groupId}
           ListItem={GroupListItem}
           type="groups"
@@ -84,7 +77,7 @@ const render = props => {
             const userId = match.params.userId;
 
             return (
-              <PageContent
+              <ResourceExplorer
                 id={userId}
                 type="users"
                 getName={x => `${x.lastName}, ${x.firstName[0]}`}

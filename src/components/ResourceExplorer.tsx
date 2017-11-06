@@ -13,7 +13,7 @@ import { provideList } from 'stateProviders';
 
 const enhance = compose(withRouter, provideList);
 
-const PageContent = ({ id, type, history, parent }) => {
+const ResourceExplorer = ({ id, type, history, parent }) => {
   const resource = RESOURCE_MAP[type];
 
   return (
@@ -73,4 +73,4 @@ const PageContent = ({ id, type, history, parent }) => {
   );
 };
 
-export default enhance(PageContent);
+export default enhance(ResourceExplorer);

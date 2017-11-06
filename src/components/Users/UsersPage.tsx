@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'glamor';
 
 import ListItem from './ListItem';
-import PageContent from 'components/PageContent';
+import ResourceExplorer from 'components/ResourceExplorer';
 
 const styles = {
   container: {
@@ -21,7 +21,7 @@ class UsersPage extends React.Component<any, any> {
 
     return (
       <div className={`row ${css(styles.container)}`}>
-        <PageContent id={id} ListItem={ListItem} type="users" />
+        <ResourceExplorer id={id} ListItem={ListItem} type="users" />
       </div>
     );
   }

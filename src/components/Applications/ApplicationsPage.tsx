@@ -3,7 +3,7 @@ import { css } from 'glamor';
 
 import ListItem from './ListItem';
 
-import PageContent from 'components/PageContent';
+import ResourceExplorer from 'components/ResourceExplorer';
 
 const styles = {
   container: {
@@ -19,7 +19,7 @@ export default class extends React.Component<any, any> {
     const id = this.props.match.params.id;
     return (
       <div className={`row ${css(styles.container)}`}>
-        <PageContent id={id} ListItem={ListItem} type="apps" />
+        <ResourceExplorer id={id} ListItem={ListItem} type="apps" />
       </div>
     );
   }
