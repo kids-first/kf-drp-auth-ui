@@ -72,6 +72,7 @@ class Content extends React.Component<any, IContentState> {
       state: { thing: { item, valid } },
       type,
       history,
+      parent,
     } = this.props;
 
     const { contentState } = this.state;
@@ -185,10 +186,43 @@ class Content extends React.Component<any, IContentState> {
       );
     };
 
+    const GoToButton = () => (
+      <Button
+        basic
+        onClick={() => history.push(`/${type}/${id}`)}
+        size="tiny"
+        color="green"
+        style={{ fontWeight: 'bold' }}
+      >
+        Go to {type} page
+      </Button>
+    );
+
+    const DeleteFromParentButton = () => (
+      <Button
+        basic
+        onClick={async () => {
+          await RESOURCE_MAP[parent.type].remove[type]({ [type]: item, item: parent });
+          await refreshList();
+          history.replace(`/${parent.type}/${parent.id}/${type}`);
+        }}
+        size="tiny"
+        color="orange"
+        style={{ fontWeight: 'bold' }}
+      >
+        Delete from {parent.type}
+      </Button>
+    );
+
     return (
       <div className={`content ${css(styles.container, stylesProp)}`}>
         <ControlContainer style={styles.controls}>
-          {![ContentState.editing, ContentState.creating].includes(contentState) ? (
+          {parent ? (
+            <Aux>
+              <GoToButton />
+              <DeleteFromParentButton />
+            </Aux>
+          ) : ![ContentState.editing, ContentState.creating].includes(contentState) ? (
             <Aux>
               <div>
                 <CreateButton />
