@@ -40,7 +40,7 @@ const ItemsWrapper = ({
   return (
     <div className={`items-wrapper`}>
       {resultSet.map(item => (
-        <div key={getKey(item)} style={{ position: 'relative' }}>
+        <div key={getKey(item)} style={styles.listItemWrapper}>
           <Component
             sortField={sortField.key}
             className={selectedItemId && getKey(item) === selectedItemId ? 'selected' : ''}
