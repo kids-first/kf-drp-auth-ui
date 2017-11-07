@@ -43,6 +43,7 @@ type Schema = {
 
 export default {
   users: {
+    icon: 'user',
     getName: x => `${x.lastName}, ${x.firstName[0]}`,
     emptyMessage: 'Please select a user',
     schema: [
@@ -106,6 +107,7 @@ export default {
     },
   },
   groups: {
+    icon: 'group',
     emptyMessage: 'Please select a group',
     schema: [
       { key: 'id', fieldName: 'ID', sortable: true, immutable: true },
@@ -145,6 +147,7 @@ export default {
     },
   },
   apps: {
+    icon: 'browser',
     emptyMessage: 'Please select an application',
     schema: [
       { key: 'id', fieldName: 'ID', sortable: true, immutable: true },

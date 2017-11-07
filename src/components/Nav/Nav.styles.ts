@@ -6,16 +6,24 @@ const styles = {
     backgroundColor: colors.purple,
     color: '#fff',
     width: 240,
-    padding: '30px 50px',
+    padding: '30px 0',
     flexShrink: 0,
     display: 'flex',
     flexDirection: 'column',
     zIndex: 100,
+    transition: 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+    '&.collapsed': {
+      width: 50,
+    },
   },
 
-  logo: {
-    width: '100%',
-    margin: '30px 0 70px',
+  emblem: {
+    height: 190,
+    '& img': {
+      display: 'block',
+      width: '60%',
+      margin: '30px auto 0',
+    },
   },
 
   linkList: {
@@ -23,7 +31,6 @@ const styles = {
     fontSize: 22,
     fontWeight: 'lighter',
     lineHeight: '35px',
-    margin: '0 -50px',
   },
 
   link: {
@@ -31,10 +38,16 @@ const styles = {
     position: 'relative',
     display: 'flex',
     width: '100%',
-    padding: '4px 50px',
-    '& span': {
+    padding: 4,
+    '& div': {
+      width: '60%',
+      margin: 'auto',
       position: 'relative',
       zIndex: 2,
+      display: 'flex',
+    },
+    '& i': {
+      flex: 'none',
     },
     '&::before': {
       display: 'block',
@@ -57,7 +70,7 @@ const styles = {
       backgroundColor: '#771872',
     },
     '&.active': {
-      '& span': {
+      '& div': {
         textShadow: '-3px 2px 2px rgba(0,0,0,0.2)',
       },
       '&::before': {
@@ -66,6 +79,18 @@ const styles = {
         opacity: 1,
       },
     },
+    '& .text': {
+      transition: 'opacity 0.25s cubic-bezier(0.19, 1, 0.22, 1)',
+      '.collapsed &': {
+        opacity: 0,
+      },
+    },
+  },
+  logout: {
+    textAlign: 'left',
+    fontSize: 22,
+    fontWeight: 'lighter',
+    padding: '0 50px',
   },
 };
 
