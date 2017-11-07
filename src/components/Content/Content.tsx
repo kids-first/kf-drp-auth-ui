@@ -195,7 +195,6 @@ class Content extends React.Component<any, IContentState> {
 
     const GoToButton = () => (
       <Button
-        basic
         onClick={() => history.push(`/${type}/${id}`)}
         size="tiny"
         color="blue"
