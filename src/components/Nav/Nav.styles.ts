@@ -18,8 +18,8 @@ const styles = {
   },
 
   emblem: {
-    height: 190,
     margin: '60px auto 0',
+    // transition: 'margin 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
     '.collapsed &': {
       margin: '30px auto 0',
     },
@@ -27,20 +27,21 @@ const styles = {
       display: 'block',
       width: '60%',
       margin: 'auto',
-      // transition: 'visibility 0s linear 0.1s',
       '&.small': {
-        // transition: 'visibility 0s linear 0s',
         height: 0,
         visibility: 'hidden',
+        // width: '30%',
+        // paddingRight: '30%',
+        // transition: 'width 0.5s, paddingRight 0.5s',
       },
       '.collapsed &': {
         '&.small': {
-          // transition: 'visibility 0s linear 0.1s',
           height: 'auto',
           visibility: 'visible',
+          // width: '60%',
+          // paddingRight: '0%',
         },
         '&.regular': {
-          // transition: 'visibility 0s linear 0s',
           height: 0,
           visibility: 'hidden',
         },
