@@ -217,7 +217,7 @@ class Content extends React.Component<any, IContentState> {
         color="orange"
         style={{ fontWeight: 'bold' }}
       >
-        Delete from {parent.type}
+        Remove from {RESOURCE_MAP[parent.type].name}
       </Button>
     );
 
