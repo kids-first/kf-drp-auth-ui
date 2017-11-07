@@ -38,7 +38,8 @@ class Nav extends React.Component<any, any> {
     return (
       <div className={`Nav ${collapsed ? 'collapsed' : ''} ${css(styles.container)}`}>
         <div className={`Emblem ${css(styles.emblem)}`}>
-          <img src={require('assets/brand-image.svg')} alt="" />
+          <img className="small" src={require('assets/brand-image-small.svg')} alt="" />
+          <img className="regular" src={require('assets/brand-image.svg')} alt="" />
         </div>
         <ul className={`LinkList ${css(resetList, styles.linkList)}`}>
           {Object.keys(RESOURCE_MAP).map(key => (

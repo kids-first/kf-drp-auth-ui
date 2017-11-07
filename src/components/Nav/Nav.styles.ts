@@ -6,7 +6,7 @@ const styles = {
     backgroundColor: colors.purple,
     color: '#fff',
     width: 240,
-    padding: '30px 0',
+    padding: '0 0 30px',
     flexShrink: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -19,10 +19,32 @@ const styles = {
 
   emblem: {
     height: 190,
+    margin: '60px auto 0',
+    '.collapsed &': {
+      margin: '30px auto 0',
+    },
     '& img': {
       display: 'block',
       width: '60%',
-      margin: '30px auto 0',
+      margin: 'auto',
+      // transition: 'visibility 0s linear 0.1s',
+      '&.small': {
+        // transition: 'visibility 0s linear 0s',
+        height: 0,
+        visibility: 'hidden',
+      },
+      '.collapsed &': {
+        '&.small': {
+          // transition: 'visibility 0s linear 0.1s',
+          height: 'auto',
+          visibility: 'visible',
+        },
+        '&.regular': {
+          // transition: 'visibility 0s linear 0s',
+          height: 0,
+          visibility: 'hidden',
+        },
+      },
     },
   },
 
