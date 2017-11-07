@@ -198,7 +198,7 @@ class Content extends React.Component<any, IContentState> {
         basic
         onClick={() => history.push(`/${type}/${id}`)}
         size="tiny"
-        color="green"
+        color="blue"
         style={{ fontWeight: 'bold' }}
       >
         Go to {type} page
@@ -214,7 +214,7 @@ class Content extends React.Component<any, IContentState> {
           history.replace(`/${parent.type}/${parent.id}/${type}`);
         }}
         size="tiny"
-        color="orange"
+        color="red"
         style={{ fontWeight: 'bold' }}
       >
         Remove from {RESOURCE_MAP[parent.type].name}
