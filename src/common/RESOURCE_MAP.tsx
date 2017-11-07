@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   getGroups,
   getUsers,
@@ -29,6 +30,7 @@ import {
 import GroupListItem from 'components/Groups/ListItem';
 import UserListItem from 'components/Users/ListItem';
 import AppListItem from 'components/Applications/ListItem';
+import { Icon } from 'semantic-ui-react';
 
 type FieldType = 'dropdown' | 'text';
 type Schema = {
@@ -43,7 +45,7 @@ type Schema = {
 
 export default {
   users: {
-    icon: 'user',
+    Icon: () => <Icon name="user" />,
     getName: x => `${x.lastName}, ${x.firstName[0]}`,
     emptyMessage: 'Please select a user',
     schema: [
@@ -107,7 +109,7 @@ export default {
     },
   },
   groups: {
-    icon: 'group',
+    Icon: () => <Icon name="group" />,
     emptyMessage: 'Please select a group',
     schema: [
       { key: 'id', fieldName: 'ID', sortable: true, immutable: true },
@@ -147,7 +149,13 @@ export default {
     },
   },
   apps: {
-    icon: 'browser',
+    Icon: () => (
+      <img
+        style={{ width: '1.18em', height: '1.18em', margin: '0.2em 0.25rem -0.18em 0' }}
+        alt=""
+        src={require('assets/icons/layers-icon.svg')}
+      />
+    ),
     emptyMessage: 'Please select an application',
     schema: [
       { key: 'id', fieldName: 'ID', sortable: true, immutable: true },

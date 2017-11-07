@@ -42,20 +42,23 @@ class Nav extends React.Component<any, any> {
           <img className="regular" src={require('assets/brand-image.svg')} alt="" />
         </div>
         <ul className={`LinkList ${css(resetList, styles.linkList)}`}>
-          {Object.keys(RESOURCE_MAP).map(key => (
-            <li key={key}>
-              <NavLink
-                className={`NavLink ${css(styles.link)}`}
-                to={`/${key}`}
-                activeClassName={'active'}
-              >
-                <div>
-                  <Icon name={RESOURCE_MAP[key].icon} />{' '}
-                  <span className="text">{_.capitalize(`${RESOURCE_MAP[key].name}s`)}</span>
-                </div>
-              </NavLink>
-            </li>
-          ))}
+          {Object.keys(RESOURCE_MAP).map(key => {
+            const Icon = RESOURCE_MAP[key].Icon;
+            return (
+              <li key={key}>
+                <NavLink
+                  className={`NavLink ${css(styles.link)}`}
+                  to={`/${key}`}
+                  activeClassName={'active'}
+                >
+                  <div>
+                    <Icon />{' '}
+                    <span className="text">{_.capitalize(`${RESOURCE_MAP[key].name}s`)}</span>
+                  </div>
+                </NavLink>
+              </li>
+            );
+          })}
         </ul>
         <CurrentUserNavItem
           style={{
