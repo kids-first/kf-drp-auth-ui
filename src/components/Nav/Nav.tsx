@@ -8,6 +8,8 @@ import styles from './Nav.styles';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
+import { Icon } from 'semantic-ui-react';
+import UnstyledButton from 'components/UnstyledButton';
 
 const resetList = {
   listStyleType: 'none',
@@ -18,11 +20,11 @@ const resetList = {
 const enhance = compose(injectState);
 
 class Nav extends React.Component<any, any> {
-  state = { collapsed: false };
+  state = { collapsed: false, windowSizeSmall: false };
   onResize = () => {
-    const collapsed = window.innerWidth < 1200;
-    if (collapsed !== this.state.collapsed) {
-      this.setState({ collapsed });
+    const windowSizeSmall = window.innerWidth < 1200;
+    if (windowSizeSmall !== this.state.windowSizeSmall) {
+      this.setState({ windowSizeSmall, collapsed: windowSizeSmall });
     }
   };
   componentDidMount() {
@@ -75,6 +77,13 @@ class Nav extends React.Component<any, any> {
             },
           }}
         />
+        <div className={`${css(styles.collapse)}`}>
+          <UnstyledButton
+            onClick={() => this.setState({ collapsed: !collapsed, userSetCollapsed: true })}
+          >
+            {collapsed ? <Icon name="long arrow right" /> : <Icon name="long arrow left" />}
+          </UnstyledButton>
+        </div>
       </div>
     );
   }

@@ -6,7 +6,6 @@ const styles = {
     backgroundColor: colors.purple,
     color: '#fff',
     width: 240,
-    padding: '0 0 30px',
     flexShrink: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -102,6 +101,15 @@ const styles = {
       '.collapsed &': {
         opacity: 0,
       },
+    },
+  },
+  collapse: {
+    textAlign: 'right',
+    borderTop: '1px solid rgba(255, 255, 255, 0.3)',
+    '& button': {
+      color: '#fff',
+      fontSize: 22,
+      margin: 10,
     },
   },
 };
