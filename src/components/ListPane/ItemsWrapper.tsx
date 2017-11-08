@@ -4,7 +4,7 @@ import { css } from 'glamor';
 import { compose, withPropsOnChange } from 'recompose';
 import withSize from 'react-sizeme';
 import { injectState } from 'freactal';
-import { Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 const enhance = compose(
   withSize({
@@ -50,9 +50,21 @@ const ItemsWrapper = ({
             selected={selectedItemId && getKey(item) === selectedItemId}
           />
           {onRemove && (
-            <Icon
-              name="close"
-              style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
+            <Button
+              icon="close"
+              compact
+              className={`${css({
+                cursor: 'pointer',
+                position: 'absolute',
+                top: '0.2em',
+                right: 0,
+                boxShadow: 'none !important',
+                '&:hover': {
+                  boxShadow: '0 0 0 1px rgba(34,36,38,.15) inset !important',
+                },
+              })}`}
+              circular
+              basic
               onClick={() => onRemove(item)}
             />
           )}
