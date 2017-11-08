@@ -33,7 +33,6 @@ class App extends React.Component<any, any> {
                 <Aux>
                   <Nav />
                   <div style={{ width: 0, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <BreadCrumb path={props.location.pathname} />
                     <Switch>
                       {Object.keys(RESOURCE_MAP).map(key => (
                         <ProtectedRoute
@@ -44,6 +43,7 @@ class App extends React.Component<any, any> {
                         />
                       ))}
                     </Switch>
+                    <BreadCrumb path={props.location.pathname} />
                   </div>
                 </Aux>
               )}
