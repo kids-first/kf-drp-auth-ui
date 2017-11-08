@@ -150,10 +150,12 @@ export default {
   },
   apps: {
     Icon: () => (
-      <img
-        style={{ width: '1.18em', height: '1.18em', margin: '0.2em 0.25rem -0.18em 0' }}
-        alt=""
-        src={require('assets/icons/layers-icon.svg')}
+      <i
+        className="icon"
+        style={{
+          background: `url("${require('assets/icons/layers-icon.svg')}") no-repeat`,
+          marginTop: '0.2em',
+        }}
       />
     ),
     emptyMessage: 'Please select an application',
