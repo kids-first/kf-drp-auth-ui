@@ -45,12 +45,12 @@ const styles = {
 
   linkList: {
     flexGrow: 1,
-    fontSize: 22,
-    fontWeight: 'lighter',
-    lineHeight: '35px',
   },
 
   link: {
+    fontWeight: 'lighter',
+    lineHeight: '35px',
+    fontSize: 22,
     color: '#fff',
     position: 'relative',
     display: 'flex',
@@ -103,12 +103,6 @@ const styles = {
         opacity: 0,
       },
     },
-  },
-  logout: {
-    textAlign: 'left',
-    fontSize: 22,
-    fontWeight: 'lighter',
-    padding: '0 50px',
   },
 };
 

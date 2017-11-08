@@ -7,7 +7,6 @@ import CurrentUserNavItem from './CurrentUserNavItem';
 import styles from './Nav.styles';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { Icon } from 'semantic-ui-react';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
 const resetList = {
