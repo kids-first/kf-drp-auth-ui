@@ -54,7 +54,7 @@ class Nav extends React.Component<any, any> {
                   activeClassName={'active'}
                 >
                   <div>
-                    <Icon />{' '}
+                    <Icon />
                     <span className="text">{_.capitalize(`${RESOURCE_MAP[key].name}s`)}</span>
                   </div>
                 </NavLink>

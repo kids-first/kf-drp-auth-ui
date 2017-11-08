@@ -97,6 +97,7 @@ const styles = {
       },
     },
     '& .text': {
+      marginLeft: 5,
       transition: 'opacity 0.25s cubic-bezier(0.19, 1, 0.22, 1)',
       '.collapsed &': {
         opacity: 0,
