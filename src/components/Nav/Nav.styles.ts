@@ -112,6 +112,22 @@ const styles = {
       margin: 10,
     },
   },
+  currentUser: {
+    paddingLeft: '20%',
+    paddingRight: '20%',
+    paddingTop: 12,
+    paddingBottom: 12,
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#771872',
+    },
+    '& .display-name': {
+      transition: 'opacity 0.25s cubic-bezier(0.19, 1, 0.22, 1)',
+      '.collapsed &': {
+        opacity: 0,
+      },
+    },
+  },
 };
 
 export default styles;

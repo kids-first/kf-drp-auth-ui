@@ -63,20 +63,7 @@ class Nav extends React.Component<any, any> {
             );
           })}
         </ul>
-        <CurrentUserNavItem
-          style={{
-            marginLeft: -50,
-            paddingLeft: 50,
-            marginRight: -50,
-            paddingTop: 12,
-            paddingBottom: 12,
-            cursor: 'pointer',
-            width: 'calc(100% + 100px)',
-            '&:hover': {
-              backgroundColor: '#771872',
-            },
-          }}
-        />
+        <CurrentUserNavItem style={styles.currentUser} />
         <div className={`${css(styles.collapse)}`}>
           <UnstyledButton
             onClick={() => this.setState({ collapsed: !collapsed, userSetCollapsed: true })}
