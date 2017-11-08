@@ -19,7 +19,6 @@ const styles = {
 
   emblem: {
     margin: '60px auto 0',
-    // transition: 'margin 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
     '.collapsed &': {
       margin: '30px auto 0',
     },
@@ -30,16 +29,11 @@ const styles = {
       '&.small': {
         height: 0,
         visibility: 'hidden',
-        // width: '30%',
-        // paddingRight: '30%',
-        // transition: 'width 0.5s, paddingRight 0.5s',
       },
       '.collapsed &': {
         '&.small': {
           height: 'auto',
           visibility: 'visible',
-          // width: '60%',
-          // paddingRight: '0%',
         },
         '&.regular': {
           height: 0,
