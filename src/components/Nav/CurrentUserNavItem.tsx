@@ -4,16 +4,11 @@ import { injectState } from 'freactal';
 import { css } from 'glamor';
 import Gravatar from 'react-gravatar';
 import { NavLink } from 'react-router-dom';
-import onClickOutside from 'react-onclickoutside';
 
 import Logout from 'components/Logout';
 import colors from 'common/colors';
 
-const enhance = compose(
-  injectState,
-  onClickOutside,
-  withState('shouldShowMenu', 'setShouldShowMenu', false),
-);
+const enhance = compose(injectState, withState('shouldShowMenu', 'setShouldShowMenu', false));
 
 const styles = {
   container: {
@@ -75,10 +70,14 @@ const styles = {
   },
 };
 
-const render = ({ state, style, shouldShowMenu, setShouldShowMenu }) => {
+const render = ({ state, style, shouldShowMenu, setShouldShowMenu, ref }) => {
   return (
     state.loggedInUser && (
-      <div className={`CurrentUserNavItem ${css(styles.container, style)}`}>
+      <div
+        className={`CurrentUserNavItem ${css(styles.container, style)}`}
+        ref={ref}
+        onClick={() => setShouldShowMenu(!shouldShowMenu)}
+      >
         <div className={`avatar-container ${css(styles.avatarContainer)}`}>
           <Gravatar
             className={`avatar ${css(styles.avatar)}`}
@@ -86,10 +85,7 @@ const render = ({ state, style, shouldShowMenu, setShouldShowMenu }) => {
             size={30}
           />
         </div>
-        <div
-          className={`display-name ${css(styles.displayName)}`}
-          onClick={() => setShouldShowMenu(!shouldShowMenu)}
-        >
+        <div className={`display-name ${css(styles.displayName)}`}>
           {state.loggedInUser.first_name}
         </div>
         {shouldShowMenu && (
@@ -97,14 +93,10 @@ const render = ({ state, style, shouldShowMenu, setShouldShowMenu }) => {
             <NavLink
               to={`/users/${state.loggedInUser.id}`}
               className={`menu-item ${css(styles.menuItem)}`}
-              onClick={() => setShouldShowMenu(false)}
             >
               Profile Page
             </NavLink>
-            <Logout
-              className={`menu-item Logout ${css(styles.menuItem)}`}
-              onClick={() => setShouldShowMenu(false)}
-            />
+            <Logout className={`menu-item Logout ${css(styles.menuItem)}`} />
           </div>
         )}
       </div>
@@ -112,8 +104,26 @@ const render = ({ state, style, shouldShowMenu, setShouldShowMenu }) => {
   );
 };
 
-const Component = enhance(render);
+const Component = class extends React.Component<any, any> {
+  ref;
 
-Component.prototype.handleClickOutside = () => console.log('click');
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside, true);
+  }
 
-export default Component;
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, true);
+  }
+
+  handleClickOutside = e => {
+    if ((!this.ref || !this.ref.contains(e.target)) && this.props.shouldShowMenu) {
+      this.props.setShouldShowMenu(false);
+    }
+  };
+
+  render() {
+    return render({ ...this.props, ref: c => (this.ref = c) });
+  }
+};
+
+export default enhance(Component);
