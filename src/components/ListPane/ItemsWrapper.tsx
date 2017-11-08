@@ -58,13 +58,12 @@ const ItemsWrapper = ({
                 position: 'absolute',
                 top: '0.2em',
                 right: 0,
-                boxShadow: 'none !important',
+                background: 'none !important',
                 '&:hover': {
-                  boxShadow: '0 0 0 1px rgba(34,36,38,.15) inset !important',
+                  background: '#e0e1e2 !important',
                 },
               })}`}
               circular
-              basic
               onClick={() => onRemove(item)}
             />
           )}
