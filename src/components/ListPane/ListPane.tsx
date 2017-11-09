@@ -6,7 +6,8 @@ import { compose, defaultProps, withProps, withState } from 'recompose';
 import colors from 'common/colors';
 import Pagination from 'components/Pagination';
 import styles from './ListPane.styles';
-import ItemsWrapper from './ItemsWrapper';
+import ItemGrid from './ItemGrid';
+import ItemTable from './ItemTable';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
 import ControlContainer from 'components/ControlsContainer';
 import { injectState } from 'freactal';
@@ -185,15 +186,14 @@ class List extends React.Component<IListProps, any> {
             </Button.Group>
           </div>
         </ControlContainer>
-        <ItemsWrapper
+        <ItemTable
           Component={Component}
+          resource={RESOURCE_MAP[type]}
           getKey={getKey}
           sortField={sortField}
           selectedItemId={selectedItemId}
           onSelect={onSelect}
           styles={styles}
-          columnWidth={columnWidth}
-          rowHeight={rowHeight}
           onRemove={
             parent &&
             (async item => {
