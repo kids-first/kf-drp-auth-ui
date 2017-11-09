@@ -48,15 +48,7 @@ const styles = {
   },
 };
 
-const ItemsWrapper = ({
-  resource,
-  selectedItemId,
-  onSelect,
-  onRemove,
-  rows,
-  state: { list: { resultSet, params: { offset, limit } } },
-  ...props,
-}) => {
+const ItemsWrapper = ({ resource, onSelect, state: { list: { resultSet } }, ...props }) => {
   const columns = resource.schema.map(schema => ({
     Header: schema.fieldName,
     accessor: schema.key,
