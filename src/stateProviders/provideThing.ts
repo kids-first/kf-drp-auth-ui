@@ -115,15 +115,14 @@ const provideThing = provideState({
         Promise.all(
           Object.keys(associated).map(key => {
             return Promise.all(
-              ['add', 'remove'].reduce(
-                (acc, action) => [
+              ['add', 'remove'].reduce((acc, action) => {
+                return [
                   ...acc,
                   ...(associated[key][action] || []).map(filterItem =>
-                    resource[action][key]({ item, [key]: filterItem }),
+                    resource[action][key]({ item, [RESOURCE_MAP[key].name.singular]: filterItem }),
                   ),
-                ],
-                [],
-              ),
+                ];
+              }, []),
             );
           }),
         );

@@ -205,7 +205,6 @@ class List extends React.Component<IListProps, any> {
             />
           </div>
         </ControlContainer>
-
         {displayMode === DisplayMode.Grid ? (
           <ItemGrid
             Component={resource.ListItem}
@@ -256,7 +255,6 @@ class List extends React.Component<IListProps, any> {
             }
           />
         )}
-
         {(limit < count || offset > 0) && (
           <Pagination
             onChange={page => updateList({ offset: page * limit })}

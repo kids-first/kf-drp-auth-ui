@@ -92,12 +92,13 @@ export default {
     initialSortOrder: 'ASC',
     associatedTypes: ['groups', 'applications'],
     add: {
-      groups: ({ groups, item }) => addGroupToUser({ user: item, group: groups }),
-      apps: ({ apps, item }) => addApplicationToUser({ user: item, application: apps }),
+      groups: ({ group, item }) => addGroupToUser({ user: item, group }),
+      applications: ({ application, item }) => addApplicationToUser({ user: item, application }),
     },
     remove: {
-      groups: ({ groups, item }) => removeGroupFromUser({ user: item, group: groups }),
-      apps: ({ apps, item }) => removeApplicationFromUser({ user: item, application: apps }),
+      groups: ({ group, item }) => removeGroupFromUser({ user: item, group }),
+      applications: ({ application, item }) =>
+        removeApplicationFromUser({ user: item, application }),
     },
     get initialSortField() {
       return this.schema.find(field => field.initialSort);
@@ -132,12 +133,13 @@ export default {
     initialSortOrder: 'ASC',
     associatedTypes: ['users', 'applications'],
     add: {
-      users: ({ users, item }) => addGroupToUser({ group: item, user: users }),
-      apps: ({ apps, item }) => addApplicationToGroup({ group: item, application: apps }),
+      users: ({ user, item }) => addGroupToUser({ group: item, user }),
+      applications: ({ application, item }) => addApplicationToGroup({ group: item, application }),
     },
     remove: {
-      users: ({ users, item }) => removeGroupFromUser({ group: item, user: users }),
-      apps: ({ apps, item }) => removeApplicationFromGroup({ group: item, application: apps }),
+      users: ({ user, item }) => removeGroupFromUser({ group: item, user }),
+      applications: ({ application, item }) =>
+        removeApplicationFromGroup({ group: item, application }),
     },
     get initialSortField() {
       return this.schema.find(field => field.initialSort);
@@ -184,13 +186,12 @@ export default {
     initialSortOrder: 'ASC',
     associatedTypes: ['groups', 'users'],
     add: {
-      users: ({ users, item }) => addApplicationToUser({ application: item, user: users }),
-      groups: ({ groups, item }) => addApplicationToGroup({ application: item, group: groups }),
+      users: ({ user, item }) => addApplicationToUser({ application: item, user }),
+      groups: ({ group, item }) => addApplicationToGroup({ application: item, group }),
     },
     remove: {
-      users: ({ users, item }) => removeApplicationFromUser({ application: item, user: users }),
-      groups: ({ groups, item }) =>
-        removeApplicationFromGroup({ application: item, group: groups }),
+      users: ({ user, item }) => removeApplicationFromUser({ application: item, user }),
+      groups: ({ group, item }) => removeApplicationFromGroup({ application: item, group }),
     },
     get initialSortField() {
       return this.schema.find(field => field.initialSort);

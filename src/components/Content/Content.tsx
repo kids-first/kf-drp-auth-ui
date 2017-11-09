@@ -207,7 +207,7 @@ class Content extends React.Component<any, IContentState> {
         basic
         onClick={async () => {
           await parent.resource.remove[resource.name.plural]({
-            [resource.name.plural]: item,
+            [resource.name.singular]: item,
             item: parent,
           });
           await refreshList();
