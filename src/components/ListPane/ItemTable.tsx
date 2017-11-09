@@ -75,20 +75,17 @@ const ItemsWrapper = ({ resource, onSelect, state: { list: { resultSet } }, ...p
             },
           )}
         getTheadThProps={(state, rowInfo, column, instance) =>
-          Object.assign(
-            {},
-            column.id === 'id'
-              ? {
-                  style: {
-                    textAlign: 'right',
-                  },
-                }
-              : {
-                  style: {
-                    textAlign: 'left',
-                  },
+          column.id === 'id'
+            ? {
+                style: {
+                  textAlign: 'right',
                 },
-          )}
+              }
+            : {
+                style: {
+                  textAlign: 'left',
+                },
+              }}
       />
     </div>
   );
