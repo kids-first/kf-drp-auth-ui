@@ -22,12 +22,12 @@ const enhance = compose(
     (props, nextProps) =>
       (props.size.width !== nextProps.size.width || props.size.height !== nextProps.size.height) &&
       nextProps.size.width !== 0,
-    ({ size, rowHeight, effects: { updateList } }) => {
+    _.debounce(({ size, rowHeight, effects: { updateList } }) => {
       const heightBuffer = 30;
       const rows = Math.max(Math.floor((size.height - heightBuffer) / rowHeight), 1);
       const limit = rows;
       updateList({ limit, rows });
-    },
+    }, 200),
   ),
 );
 
