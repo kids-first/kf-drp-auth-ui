@@ -11,7 +11,8 @@ import ItemTable from './ItemTable';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
 import ControlContainer from 'components/ControlsContainer';
 import { injectState } from 'freactal';
-import { TSortDirection } from 'common/typedefs/Resource';
+import { TSortDirection, IResource, TField } from 'common/typedefs/Resource';
+import { TThing } from 'common/typedefs';
 
 enum DisplayMode {
   Table,
@@ -20,7 +21,7 @@ enum DisplayMode {
 
 interface IListProps {
   initialQuery: string;
-  resource: any;
+  resource: IResource;
   onSelect: Function;
   getKey: Function;
   columnWidth: number;
@@ -41,14 +42,14 @@ interface IListProps {
   state: {
     list: {
       limit: number;
-      resultSet: any[];
+      resultSet: TThing[];
       count: number;
       params: any;
     };
   };
   parent: {
     id: string;
-    resource: any;
+    resource: IResource;
   };
   displayMode: DisplayMode;
   setDisplayMode: Function;
@@ -219,7 +220,9 @@ class List extends React.Component<IListProps, any> {
             onRemove={
               parent &&
               (async item => {
-                await parent.resource.remove[resource.name.plural]({
+                const removeFunction =
+                  parent.resource.remove[resource.name.plural] || (() => Promise.resolve());
+                await removeFunction({
                   [resource.name.plural]: item,
                   item: parent,
                 });
@@ -247,7 +250,9 @@ class List extends React.Component<IListProps, any> {
             onRemove={
               parent &&
               (async item => {
-                await parent.resource.remove[resource.name.plural]({
+                const removeFunction =
+                  parent.resource.remove[resource.name.plural] || (() => Promise.resolve());
+                await removeFunction({
                   [resource.name.plural]: item,
                   item: parent,
                 });

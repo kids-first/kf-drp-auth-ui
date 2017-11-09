@@ -41,5 +41,5 @@ export interface IResource {
   add: { [key in TResourceType]?: (params: any) => Promise<any> };
   remove: { [key in TResourceType]?: (params: any) => Promise<any> };
   initialSortField: string;
-  sortableFields: string;
+  sortableFields: Schema;
 }
