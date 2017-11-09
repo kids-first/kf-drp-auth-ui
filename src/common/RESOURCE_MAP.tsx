@@ -81,7 +81,7 @@ export default {
       },
     ] as Schema,
     noDelete: true,
-    name: 'user',
+    name: { singular: 'user', plural: 'users' },
     ListItem: UserListItem,
     getList: getUsers,
     getItem: getUser,
@@ -90,7 +90,7 @@ export default {
     deleteItem: deleteUser,
     rowHeight: 50,
     initialSortOrder: 'ASC',
-    associatedTypes: ['groups', 'apps'],
+    associatedTypes: ['groups', 'applications'],
     add: {
       groups: ({ groups, item }) => addGroupToUser({ user: item, group: groups }),
       apps: ({ apps, item }) => addApplicationToUser({ user: item, application: apps }),
@@ -121,7 +121,7 @@ export default {
         options: STATUSES,
       },
     ] as Schema,
-    name: 'group',
+    name: { singular: 'group', plural: 'groups' },
     ListItem: GroupListItem,
     getList: getGroups,
     updateItem: updateGroup,
@@ -130,7 +130,7 @@ export default {
     getItem: getGroup,
     rowHeight: 44,
     initialSortOrder: 'ASC',
-    associatedTypes: ['users', 'apps'],
+    associatedTypes: ['users', 'applications'],
     add: {
       users: ({ users, item }) => addGroupToUser({ group: item, user: users }),
       apps: ({ apps, item }) => addApplicationToGroup({ group: item, application: apps }),
@@ -146,7 +146,7 @@ export default {
       return this.schema.filter(field => field.sortable);
     },
   },
-  apps: {
+  applications: {
     Icon: ({ style }) => (
       <i
         className="icon"
@@ -173,7 +173,7 @@ export default {
       { key: 'clientSecret', fieldName: 'Client Secret', required: true },
       { key: 'redirectUri', fieldName: 'Redirect Uri', required: true },
     ] as Schema,
-    name: 'application',
+    name: { singular: 'application', plural: 'applications' },
     ListItem: AppListItem,
     getList: getApps,
     updateItem: updateApplication,

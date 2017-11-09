@@ -3,9 +3,16 @@ import _ from 'lodash';
 import { Table, Input, Dropdown } from 'semantic-ui-react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import RESOURCE_MAP from 'common/RESOURCE_MAP';
 
-function rowInput({ data, row, stageChange }) {
+function rowInput({
+  data,
+  row,
+  stageChange,
+}: {
+  data: Object;
+  row: { options: string[]; type: string; key: string };
+  stageChange: Function;
+}) {
   switch (row.type) {
     case 'dropdown':
       return (
@@ -71,12 +78,12 @@ class EditingContentTable extends React.Component<any, any> {
   render() {
     const {
       rows,
-      state: { thing: { staged, associated, type } },
+      state: { thing: { staged, associated, resource } },
       effects: { stageChange },
       hideImmutable,
     } = this.props;
 
-    const immutableKeys = RESOURCE_MAP[type].schema.filter(f => f.immutable).map(f => f.key);
+    const immutableKeys = resource.schema.filter(f => f.immutable).map(f => f.key);
 
     return (
       <Table basic="very" style={{ fontSize: 18 }}>

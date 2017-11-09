@@ -11,8 +11,6 @@ import ItemTable from './ItemTable';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
 import ControlContainer from 'components/ControlsContainer';
 import { injectState } from 'freactal';
-import RESOURCE_MAP from 'common/RESOURCE_MAP';
-import { STATUSES } from 'common/injectGlobals';
 
 enum DisplayMode {
   Table,
@@ -20,31 +18,24 @@ enum DisplayMode {
 }
 
 interface IListProps {
+  initialQuery: string;
+  resource: any;
   onSelect: Function;
-  Component: any;
   getKey: Function;
   columnWidth: number;
-  rowHeight: number;
   styles: any;
   selectedItemId: string;
-  sortableFields: {
-    key: string;
-    fieldName: string;
-  }[];
-  initialSortField: string;
   currentSort: {
     order: 'ASC' | 'DESC';
     field: any;
   };
   setCurrentSort: Function;
-  initialSortOrder: 'ASC' | 'DESC';
-  query: string;
   setQuery: Function;
-  type: string;
+  query: string;
   effects: {
     updateList: Function;
     refreshList: Function;
-    setListType: Function;
+    setListResource: Function;
   };
   state: {
     list: {
@@ -56,7 +47,7 @@ interface IListProps {
   };
   parent: {
     id: string;
-    type: string;
+    resource: any;
   };
   displayMode: DisplayMode;
   setDisplayMode: Function;
@@ -75,11 +66,11 @@ const enhance = compose(
   withState('displayMode', 'setDisplayMode', DisplayMode.Grid),
   withState('query', 'setQuery', props => props.initialQuery || ''),
   withState('currentSort', 'setCurrentSort', props => ({
-    field: props.initialSortField,
-    order: props.initialSortOrder,
+    field: props.resource.initialSortField,
+    order: props.resource.initialSortOrder,
   })),
-  withProps(({ columnWidth, rowHeight, styles: stylesProp }) => ({
-    styles: _.merge(styles({ columnWidth, rowHeight }), [stylesProp]),
+  withProps(({ columnWidth, resource, styles: stylesProp }) => ({
+    styles: _.merge(styles({ columnWidth, rowHeight: resource.rowHeight }), [stylesProp]),
   })),
 );
 
@@ -111,18 +102,18 @@ class List extends React.Component<IListProps, any> {
       parent,
       currentSort: { field, order },
       query,
-      type,
-      effects: { updateList, setListType },
+      resource,
+      effects: { updateList, setListResource },
     } = this.props;
 
-    await setListType(type);
+    await setListResource(resource);
 
     updateList({
       offset,
       sortField: field.key,
       sortOrder: order,
       query,
-      ...(parent && { [`${parent.type}Id`]: parent.id }),
+      ...(parent && { [`${parent.resource.name.plural}Id`]: parent.id }),
     });
   };
 
@@ -132,7 +123,7 @@ class List extends React.Component<IListProps, any> {
 
   componentDidUpdate(prevProps: IListProps, prevState: IListState) {
     if (
-      prevProps.type !== this.props.type ||
+      prevProps.resource !== this.props.resource ||
       prevProps.currentSort.field.key !== this.props.currentSort.field.key ||
       prevProps.currentSort.order !== this.props.currentSort.order ||
       prevProps.query !== this.props.query
@@ -144,22 +135,19 @@ class List extends React.Component<IListProps, any> {
   render() {
     const {
       onSelect,
-      Component,
       getKey,
       styles,
       selectedItemId,
-      sortableFields,
       currentSort,
       setCurrentSort,
       setQuery,
       state: { list: { count = 0, params: { offset, limit } } },
       effects: { updateList, refreshList },
       columnWidth,
-      rowHeight,
       parent,
-      type,
       displayMode,
       setDisplayMode,
+      resource,
     } = this.props;
 
     return (
@@ -174,12 +162,15 @@ class List extends React.Component<IListProps, any> {
               selection
               style={{ minWidth: '9.1em', marginLeft: '0.5em' }}
               selectOnNavigation={false}
-              options={sortableFields.map(field => ({ text: field.fieldName, value: field.key }))}
+              options={resource.sortableFields.map(field => ({
+                text: field.fieldName,
+                value: field.key,
+              }))}
               text={currentSort.field.fieldName}
               onChange={(event, { value }) =>
                 setCurrentSort({
                   ...currentSort,
-                  field: sortableFields.find(field => field.key === value),
+                  field: resource.sortableFields.find(field => field.key === value),
                 })}
             />
             <Button.Group className={`${css(paneControls.sortOrderWrapper)}`} vertical>
@@ -214,28 +205,32 @@ class List extends React.Component<IListProps, any> {
             />
           </div>
         </ControlContainer>
+
         {displayMode === DisplayMode.Grid ? (
           <ItemGrid
-            Component={Component}
+            Component={resource.ListItem}
             getKey={getKey}
             sortField={currentSort.field}
             selectedItemId={selectedItemId}
             onSelect={onSelect}
             styles={styles}
             columnWidth={columnWidth}
-            rowHeight={rowHeight}
+            rowHeight={resource.rowHeight}
             onRemove={
               parent &&
               (async item => {
-                await RESOURCE_MAP[parent.type].remove[type]({ [type]: item, item: parent });
+                await parent.resource.remove[resource.name.plural]({
+                  [resource.name.plural]: item,
+                  item: parent,
+                });
                 refreshList();
               })
             }
           />
         ) : (
           <ItemTable
-            Component={Component}
-            resource={RESOURCE_MAP[type]}
+            Component={resource.ListItem}
+            resource={resource}
             getKey={getKey}
             currentSort={currentSort}
             selectedItemId={selectedItemId}
@@ -245,19 +240,23 @@ class List extends React.Component<IListProps, any> {
               setCurrentSort({
                 ...currentSort,
                 order: newSortOrder,
-                field: sortableFields.find(field => field.key === newSortField),
+                field: resource.sortableFields.find(field => field.key === newSortField),
               });
             }}
             defaultSortMethod={() => {}}
             onRemove={
               parent &&
               (async item => {
-                await RESOURCE_MAP[parent.type].remove[type]({ [type]: item, item: parent });
+                await parent.resource.remove[resource.name.plural]({
+                  [resource.name.plural]: item,
+                  item: parent,
+                });
                 refreshList();
               })
             }
           />
         )}
+
         {(limit < count || offset > 0) && (
           <Pagination
             onChange={page => updateList({ offset: page * limit })}
