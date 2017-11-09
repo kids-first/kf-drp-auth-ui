@@ -96,6 +96,9 @@ const paneControls = {
     marginLeft: '10px',
     marginRight: '10px',
   },
+  displayModeContainer: {
+    marginRight: '10px',
+  },
 };
 
 class List extends React.Component<IListProps, any> {
@@ -195,7 +198,7 @@ class List extends React.Component<IListProps, any> {
               />
             </Button.Group>
           </div>
-          <div>
+          <div className={`display-mode-container ${css(paneControls.displayModeContainer)}`}>
             <Button
               icon="list layout"
               style={displayMode === DisplayMode.Table ? { color: colors.purple } : {}}
