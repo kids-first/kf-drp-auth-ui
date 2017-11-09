@@ -169,7 +169,6 @@ class List extends React.Component<IListProps, any> {
           </div>
           <div className={`sort-container ${css(paneControls.sortContainer)}`}>
             Sort by:
-            {console.log(sortableFields)}
             <Dropdown
               selection
               style={{ minWidth: '10em', marginLeft: '0.5em' }}
