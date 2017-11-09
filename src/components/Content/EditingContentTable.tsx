@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Table, Input, Dropdown } from 'semantic-ui-react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
+import { TField } from 'common/typedefs/Resource';
 
 function rowInput({
   data,
@@ -10,15 +11,15 @@ function rowInput({
   stageChange,
 }: {
   data: Object;
-  row: { options: string[]; type: string; key: string };
+  row: TField;
   stageChange: Function;
 }) {
-  switch (row.type) {
+  switch (row.fieldType) {
     case 'dropdown':
       return (
         <Dropdown
           selection
-          options={row.options.map(text => ({ text, value: text }))}
+          options={(row.options || []).map(text => ({ text, value: text }))}
           text={data[row.key]}
           onChange={(event, { value }) => stageChange({ [row.key]: value })}
           style={{ fontSize: 14.1429 }}
@@ -43,7 +44,7 @@ function normalizeRow({
   stageChange,
   immutableKeys,
 }: {
-  row: { key: string; fieldName: any; fieldContent: any; type: string; options: any };
+  row: TField;
   data: Object[];
   associated: Object[];
   stageChange: Function;

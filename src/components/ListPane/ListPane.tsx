@@ -11,6 +11,7 @@ import ItemTable from './ItemTable';
 import { Dropdown, Button, Input } from 'semantic-ui-react';
 import ControlContainer from 'components/ControlsContainer';
 import { injectState } from 'freactal';
+import { TSortDirection } from 'common/typedefs/Resource';
 
 enum DisplayMode {
   Table,
@@ -26,7 +27,7 @@ interface IListProps {
   styles: any;
   selectedItemId: string;
   currentSort: {
-    order: 'ASC' | 'DESC';
+    order: TSortDirection;
     field: any;
   };
   setCurrentSort: Function;

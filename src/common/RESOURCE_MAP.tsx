@@ -29,19 +29,9 @@ import GroupListItem from 'components/Groups/ListItem';
 import UserListItem from 'components/Users/ListItem';
 import AppListItem from 'components/Applications/ListItem';
 import { Icon } from 'semantic-ui-react';
+import { IResource, TResourceType } from 'common/typedefs/Resource';
 
-type FieldType = 'dropdown' | 'text';
-type Schema = {
-  key: string;
-  fieldName: string;
-  sortable?: boolean;
-  initialSort: boolean;
-  fieldType: FieldType;
-  options?: string[];
-  required?: boolean;
-}[];
-
-export default {
+const RESOURCE_MAP: { [key in TResourceType]: IResource } = {
   users: {
     Icon: ({ style }) => <Icon name="user" style={style} />,
     getName: x => `${x.lastName}, ${x.firstName[0]}`,
@@ -62,13 +52,13 @@ export default {
         fieldName: 'Role',
         sortable: true,
         required: true,
-        type: 'dropdown',
+        fieldType: 'dropdown',
         options: ['Admin', 'User'],
       },
       {
         key: 'status',
         fieldName: 'Status',
-        type: 'dropdown',
+        fieldType: 'dropdown',
         options: STATUSES,
       },
       { key: 'createdAt', fieldName: 'Date Created', sortable: true, immutable: true },
@@ -76,10 +66,10 @@ export default {
       {
         key: 'preferredLanguage',
         fieldName: 'Preferred Language',
-        type: 'dropdown',
+        fieldType: 'dropdown',
         options: ['English', 'Spanish'],
       },
-    ] as Schema,
+    ],
     noDelete: true,
     name: { singular: 'user', plural: 'users' },
     ListItem: UserListItem,
@@ -118,10 +108,10 @@ export default {
         key: 'status',
         fieldName: 'Status',
         sortable: true,
-        type: 'dropdown',
+        fieldType: 'dropdown',
         options: STATUSES,
       },
-    ] as Schema,
+    ],
     name: { singular: 'group', plural: 'groups' },
     ListItem: GroupListItem,
     getList: getGroups,
@@ -168,13 +158,13 @@ export default {
         key: 'status',
         fieldName: 'Status',
         sortable: true,
-        type: 'dropdown',
+        fieldType: 'dropdown',
         options: STATUSES,
       },
       { key: 'clientId', fieldName: 'Client ID', required: true },
       { key: 'clientSecret', fieldName: 'Client Secret', required: true },
       { key: 'redirectUri', fieldName: 'Redirect Uri', required: true },
-    ] as Schema,
+    ],
     name: { singular: 'application', plural: 'applications' },
     ListItem: AppListItem,
     getList: getApps,
@@ -201,3 +191,5 @@ export default {
     },
   },
 };
+
+export default RESOURCE_MAP;
