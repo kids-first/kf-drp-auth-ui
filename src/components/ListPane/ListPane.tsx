@@ -237,6 +237,11 @@ class List extends React.Component<IListProps, any> {
             selectedItemId={selectedItemId}
             onSelect={onSelect}
             styles={styles}
+            onSortChange={(sortField, sortOrder) => {
+              setSortField(sortableFields.find(field => field.key === sortField));
+              setSortOrder(sortOrder);
+            }}
+            defaultSortMethod={() => {}}
             onRemove={
               parent &&
               (async item => {
