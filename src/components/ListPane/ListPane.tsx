@@ -113,7 +113,7 @@ class List extends React.Component<IListProps, any> {
       sortField: field.key,
       sortOrder: order,
       query,
-      ...(parent && { [`${parent.resource.name.plural}Id`]: parent.id }),
+      ...(parent && { [`${parent.resource.name.singular}Id`]: parent.id }),
     });
   };
 

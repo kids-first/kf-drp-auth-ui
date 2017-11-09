@@ -17,7 +17,7 @@ const provideThing = provideState({
             resource.getItem(id),
             ...resource.associatedTypes.map(associatedType =>
               RESOURCE_MAP[associatedType].getList({
-                [`${resource.name.plural}Id`]: id,
+                [`${resource.name.singular}Id`]: id,
                 limit: MAX_ASSOCIATED,
               }),
             ),
