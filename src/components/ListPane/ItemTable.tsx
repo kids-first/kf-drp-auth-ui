@@ -15,7 +15,7 @@ const enhance = compose(
     monitorHeight: true,
   }),
   defaultProps({
-    rowHeight: 40,
+    rowHeight: 33,
   }),
   injectState,
   withPropsOnChange(
@@ -23,22 +23,39 @@ const enhance = compose(
       (props.size.width !== nextProps.size.width || props.size.height !== nextProps.size.height) &&
       nextProps.size.width !== 0,
     ({ size, rowHeight, effects: { updateList } }) => {
-      const columns = 1;
-      const rows = Math.max(Math.floor(size.height / rowHeight), 1);
-      const limit = columns * rows;
-
-      updateList({ limit });
+      const heightBuffer = 30;
+      const rows = Math.max(Math.floor((size.height - heightBuffer) / rowHeight), 1);
+      const limit = rows;
+      updateList({ limit, rows });
     },
   ),
 );
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flexGrow: 1,
+    '& .ReactTable': {
+      width: '100%',
+    },
+  },
+  table: {
+    '& .rt-tr-group': {
+      cursor: 'pointer',
+    },
+  },
+};
 
 const ItemsWrapper = ({
   resource,
   selectedItemId,
   onSelect,
-  styles,
   onRemove,
+  rows,
   state: { list: { resultSet, params: { offset, limit } } },
+  ...props,
 }) => {
   const columns = resource.schema.map(schema => ({
     Header: schema.fieldName,
@@ -47,14 +64,39 @@ const ItemsWrapper = ({
   }));
 
   return (
-    <div className={`items-wrapper`}>
+    <div className={`ItemTable ${css(styles.container, props.styles)}`}>
       <ReactTable
+        className={`-striped -highlight ${css(styles.table)}`}
         columns={columns}
+        pageSize={resultSet.length}
         data={resultSet}
         showPagination={false}
-        getTdProps={(state, rowInfo, column, instance) => ({
-          onClick: () => onSelect(rowInfo.original),
-        })}
+        getTdProps={(state, rowInfo, column, instance) =>
+          Object.assign(
+            {
+              onClick: () => onSelect(rowInfo.original),
+            },
+            column.id === 'id' && {
+              style: {
+                textAlign: 'right',
+              },
+            },
+          )}
+        getTheadThProps={(state, rowInfo, column, instance) =>
+          Object.assign(
+            {},
+            column.id === 'id'
+              ? {
+                  style: {
+                    textAlign: 'right',
+                  },
+                }
+              : {
+                  style: {
+                    textAlign: 'left',
+                  },
+                },
+          )}
       />
     </div>
   );
