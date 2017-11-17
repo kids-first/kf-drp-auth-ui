@@ -13,6 +13,7 @@ export default provideState({
         sortField: null,
         sortOrder: null,
         query: null,
+        status: 'All',
       },
     },
   }),

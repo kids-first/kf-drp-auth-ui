@@ -12,6 +12,7 @@ import { Dropdown, Button, Input } from 'semantic-ui-react';
 import ControlContainer from 'components/ControlsContainer';
 import { injectState } from 'freactal';
 import RESOURCE_MAP from 'common/RESOURCE_MAP';
+import { STATUSES } from 'common/injectGlobals';
 
 enum DisplayMode {
   Table,
@@ -151,7 +152,7 @@ class List extends React.Component<IListProps, any> {
       currentSort,
       setCurrentSort,
       setQuery,
-      state: { list: { count = 0, params: { offset, limit } } },
+      state: { list: { count = 0, params: { offset, limit, status } } },
       effects: { updateList, refreshList },
       columnWidth,
       rowHeight,
@@ -168,10 +169,21 @@ class List extends React.Component<IListProps, any> {
             <Input placeholder="Search..." onChange={(event, { value }) => setQuery(value)} />
           </div>
           <div className={`sort-container ${css(paneControls.sortContainer)}`}>
+            Status:
+            <Dropdown
+              selection
+              style={{ minWidth: '7.6em', marginLeft: '0.5em' }}
+              selectOnNavigation={false}
+              options={['All', ...STATUSES].map(value => ({ text: value, value }))}
+              text={status}
+              onChange={(event, { value }) => updateList({ status: value })}
+            />
+          </div>
+          <div className={`sort-container ${css(paneControls.sortContainer)}`}>
             Sort by:
             <Dropdown
               selection
-              style={{ minWidth: '10em', marginLeft: '0.5em' }}
+              style={{ minWidth: '9.1em', marginLeft: '0.5em' }}
               selectOnNavigation={false}
               options={sortableFields.map(field => ({ text: field.fieldName, value: field.key }))}
               text={currentSort.field.fieldName}
