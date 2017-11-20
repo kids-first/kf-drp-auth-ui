@@ -152,7 +152,7 @@ class List extends React.Component<IListProps, any> {
       currentSort,
       setCurrentSort,
       setQuery,
-      state: { list: { count = 0, params: { offset, limit, status } } },
+      state: { list: { count = 0, params: { offset, limit } } },
       effects: { updateList, refreshList },
       columnWidth,
       rowHeight,
@@ -167,17 +167,6 @@ class List extends React.Component<IListProps, any> {
         <ControlContainer>
           <div className={`search-container ${css(paneControls.searchContainer)}`}>
             <Input placeholder="Search..." onChange={(event, { value }) => setQuery(value)} />
-          </div>
-          <div className={`sort-container ${css(paneControls.sortContainer)}`}>
-            Status:
-            <Dropdown
-              selection
-              style={{ minWidth: '7.6em', marginLeft: '0.5em' }}
-              selectOnNavigation={false}
-              options={['All', ...STATUSES].map(value => ({ text: value, value }))}
-              text={status}
-              onChange={(event, { value }) => updateList({ status: value })}
-            />
           </div>
           <div className={`sort-container ${css(paneControls.sortContainer)}`}>
             Sort by:
