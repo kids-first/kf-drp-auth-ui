@@ -31,7 +31,7 @@ export default provideState({
     refreshList: async effects => {
       const { list: { params, type } } = await effects.getState();
       const match = (params.query || '').match(/^(.*)status:\s*("([^"]*)"|([^\s]+))(.*)$/);
-      var [, before, , statusQuoted, statusUnquoted, after] = match || Array(5);
+      const [, before, , statusQuoted, statusUnquoted, after] = match || Array(5);
 
       const response = await RESOURCE_MAP[type].getList({
         ...params,
