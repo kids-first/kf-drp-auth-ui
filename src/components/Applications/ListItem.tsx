@@ -30,17 +30,7 @@ const styles = {
 export default ({ item, sortField, style, className = '', ...props }) => {
   const secondaryField = sortField === 'name' ? 'clientId' : sortField;
   return (
-    <div
-      className={`AppListItem ${className} ${css(
-        styles.container,
-        item.status === 'Disabled' && {
-          opacity: 0.3,
-          fontStyle: 'italic',
-        },
-        style,
-      )}`}
-      {...props}
-    >
+    <div className={`AppListItem ${className} ${css(styles.container, style)}`} {...props}>
       <span className={`primary-field ${css(styles.primaryField)}`}>{item.name}</span>
       <span className={`secondary-field ${css(styles.secondaryField)}`}>
         <Truncate lines={1}>{item[secondaryField]}</Truncate>
