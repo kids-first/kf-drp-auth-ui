@@ -26,13 +26,13 @@ const styles = {
 };
 
 export default ({ item, sortField, className = '', style, ...props }) => {
-  const { firstName, lastName, email, status, role } = item;
+  const { firstName, lastName, status, role } = item;
   const secondaryField = sortField === 'lastName' ? 'email' : sortField;
   return (
     <div
       className={`Item ${className} ${css(
         styles.container,
-        status === 'Deactivated' && {
+        status === 'Disabled' && {
           opacity: 0.3,
           fontStyle: 'italic',
         },

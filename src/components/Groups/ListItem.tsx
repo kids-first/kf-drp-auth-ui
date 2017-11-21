@@ -30,7 +30,17 @@ const styles = {
 const GroupListItem = ({ item, sortField, className = '', style, ...props }) => {
   const secondaryField = sortField === 'name' ? 'description' : sortField;
   return (
-    <div className={`GroupListItem ${className} ${css(styles.container, style)}`} {...props}>
+    <div
+      className={`GroupListItem ${className} ${css(
+        styles.container,
+        item.status === 'Disabled' && {
+          opacity: 0.3,
+          fontStyle: 'italic',
+        },
+        style,
+      )}`}
+      {...props}
+    >
       <span className={`name ${css(styles.primaryField)}`}>{item.name}</span>
       <span className={`secondary-field ${css(styles.secondaryField)}`}>
         <Truncate lines={1}>{item[secondaryField]}</Truncate>
