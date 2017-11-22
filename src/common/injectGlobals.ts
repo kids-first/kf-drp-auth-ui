@@ -13,7 +13,7 @@ export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
 
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
-export const allRedirectUris = (process.env.REACT_APP_OTHER_REDIRECT_URIS || '')
+export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRED || '')
   .split(',')
   .concat(defaultRedirectUri)
   .filter(Boolean);
