@@ -68,13 +68,17 @@ class Nav extends React.Component<any, any> {
             );
           })}
         </ul>
+
         <CurrentUserNavItem style={styles.currentUser} />
-        <UnstyledButton
+
+        <Ripple
+          passStyle
+          as={UnstyledButton}
           style={styles.collapse}
           onClick={() => this.setState({ collapsed: !collapsed, userSetCollapsed: true })}
         >
           {collapsed ? <Icon name="chevron right" /> : <Icon name="chevron left" />}
-        </UnstyledButton>
+        </Ripple>
       </div>
     );
   }
