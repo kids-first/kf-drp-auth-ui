@@ -16,7 +16,7 @@ import Aux from 'components/Aux';
 
 const styles = {
   container: {
-    backgroundColor: colors.purple,
+    backgroundColor: 'white',
     color: '#fff',
     display: 'flex',
     flexDirection: 'column',
@@ -88,8 +88,6 @@ class Component extends React.Component<any, any> {
 
     return (
       <div className={`Login ${css(styles.container)}`}>
-        <img src={require('assets/brand-image.svg')} alt="" className={`${css(styles.logo)}`} />
-        <h1 className={`${css(styles.title)}`}>Admin Portal</h1>
         {renderSocialLoginButtons ? (
           <Aux>
             <GoogleLogin onLogin={this.onGoogleLogin} />
