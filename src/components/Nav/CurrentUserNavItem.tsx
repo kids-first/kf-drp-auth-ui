@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 
 import Logout from 'components/Logout';
 import colors from 'common/colors';
-import Ripple from 'components/Ripple';
 
 const enhance = compose(injectState, withState('shouldShowMenu', 'setShouldShowMenu', false));
 
