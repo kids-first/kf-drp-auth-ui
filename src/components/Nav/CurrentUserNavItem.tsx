@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'glamor';
 import Gravatar from 'react-gravatar';
