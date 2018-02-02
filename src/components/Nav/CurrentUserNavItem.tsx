@@ -74,7 +74,7 @@ const styles = {
 const render = ({ state, style, shouldShowMenu, setShouldShowMenu, ref }) => {
   return (
     state.loggedInUser && (
-      <Ripple
+      <div
         className={`CurrentUserNavItem ${css(styles.container, style)}`}
         ref={ref}
         onClick={() => setShouldShowMenu(!shouldShowMenu)}
@@ -100,7 +100,7 @@ const render = ({ state, style, shouldShowMenu, setShouldShowMenu, ref }) => {
             <Logout className={`menu-item Logout ${css(styles.menuItem)}`} />
           </div>
         )}
-      </Ripple>
+      </div>
     )
   );
 };
