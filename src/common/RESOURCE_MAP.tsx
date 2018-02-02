@@ -30,7 +30,7 @@ import { GroupListItem, UserListItem, ApplicationListItem } from 'components/Lis
 import { Icon } from 'semantic-ui-react';
 import { IResource, TResourceType } from 'common/typedefs/Resource';
 
-const RESOURCE_MAP: { [key in TResourceType]: IResource } = {
+const RESOURCE_MAP: {[key in TResourceType]: IResource } = {
   users: {
     Icon: ({ style }) => <Icon name="user" style={style} />,
     getName: x => `${x.lastName}, ${x.firstName[0]}`,
@@ -57,6 +57,8 @@ const RESOURCE_MAP: { [key in TResourceType]: IResource } = {
       {
         key: 'status',
         fieldName: 'Status',
+        sortable: true,
+        required: true,
         fieldType: 'dropdown',
         options: STATUSES,
       },
