@@ -22,13 +22,13 @@ export default ({
   total,
   range = 5,
 }: {
-    onChange: Function;
-    onLimitChange?: Function;
-    offset: number;
-    limit: number;
-    total: number;
-    range?: number;
-  }) => {
+  onChange: Function;
+  onLimitChange?: Function;
+  offset: number;
+  limit: number;
+  total: number;
+  range?: number;
+}) => {
   const totalPages = Math.ceil(total / limit);
   const currentPage = offset / limit;
   const halfRange = Math.floor(range / 2);
@@ -36,15 +36,15 @@ export default ({
     totalPages <= range + 4
       ? [0, totalPages]
       : [
-        Math.min(
-          currentPage < halfRange + 3 ? 0 : currentPage - halfRange,
-          totalPages - range - 2,
-        ),
-        Math.max(
-          totalPages - 1 - currentPage < halfRange + 3 ? totalPages - 1 : currentPage + halfRange,
-          range + 1,
-        ),
-      ];
+          Math.min(
+            currentPage < halfRange + 3 ? 0 : currentPage - halfRange,
+            totalPages - range - 2,
+          ),
+          Math.max(
+            totalPages - 1 - currentPage < halfRange + 3 ? totalPages - 1 : currentPage + halfRange,
+            range + 1,
+          ),
+        ];
   const menuItems = Array(totalPages)
     .fill(null)
     .map((d, i) => {

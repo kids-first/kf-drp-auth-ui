@@ -93,8 +93,8 @@ class Component extends React.Component<any, any> {
             <FacebookLogin onLogin={this.onFacebookLogin} />
           </Aux>
         ) : (
-            <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-          )}
+          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
+        )}
       </div>
     );
   }
