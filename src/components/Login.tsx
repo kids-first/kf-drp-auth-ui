@@ -5,7 +5,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 
-import colors from 'common/colors';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/LoginButtons/FacebookLogin';
 import GoogleLogin from 'components/LoginButtons/GoogleLogin';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'glamor';
 import Gravatar from 'react-gravatar';
@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 
 import Logout from 'components/Logout';
 import colors from 'common/colors';
-import Ripple from 'components/Ripple';
 
 const enhance = compose(injectState, withState('shouldShowMenu', 'setShouldShowMenu', false));
 
@@ -74,7 +73,7 @@ const styles = {
 const render = ({ state, style, shouldShowMenu, setShouldShowMenu, ref }) => {
   return (
     state.loggedInUser && (
-      <Ripple
+      <div
         className={`CurrentUserNavItem ${css(styles.container, style)}`}
         ref={ref}
         onClick={() => setShouldShowMenu(!shouldShowMenu)}
@@ -100,7 +99,7 @@ const render = ({ state, style, shouldShowMenu, setShouldShowMenu, ref }) => {
             <Logout className={`menu-item Logout ${css(styles.menuItem)}`} />
           </div>
         )}
-      </Ripple>
+      </div>
     )
   );
 };

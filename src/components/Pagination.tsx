@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'glamor';
 
-import { Menu, Dropdown } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { WIDTHS } from 'semantic-ui-react/dist/es/lib/SUI';
 
 const styles = {
