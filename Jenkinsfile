@@ -51,11 +51,6 @@ pipeline {
       }
     }
     stage('Deploy Dev') {
-      when {
-        expression {
-          return env.BRANCH_NAME != 'master';
-        }
-      }
       steps {
         slackSend (color: '#005e99', message: ":deploying_dev: DEPLOYING TO DEVELOPMENT: (${env.BUILD_URL})")
         sh '''
