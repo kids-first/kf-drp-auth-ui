@@ -79,7 +79,7 @@ pipeline {
        }
       steps {
         sh '''
-        kf-auth-ui/aws-cloudfront-static-app/ci-scripts/build_stage/build.sh qa
+        kf-auth-ui-config/aws-cloudfront-static-app/ci-scripts/build_stage/build.sh qa
         '''
       }
     }
