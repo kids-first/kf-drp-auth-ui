@@ -1,4 +1,4 @@
-@Library("kids-first/aws-infra-jenkins-shared-libraries") _
+@Library("kids-first/aws-infra-jenkins-shared-libraries-develop") _
 
 auth_ui {
     agentLabel = "terraform-testing"
